@@ -1,0 +1,39 @@
+{
+  "_comment": "Research projects. Cards show title, sponsor, collaborators, and (if present) a description. No outbound links by design — add a 'description' string to any project to populate the card body.",
+  "items": [
+    {
+      "title": "Capacity Building to Enhance the Understanding of Process, Structure, and Property Relationships of Ultra-High Temperature Materials for Extreme Environments",
+      "sponsor": "AFOSR",
+      "collaborators": ["Hema Ramsurn (UTulsa)", "Michael Keller (UTulsa)"],
+      "description": ""
+    },
+    {
+      "title": "CAREER: Understanding and controlling the sintering of metal powders with nanoscale additives",
+      "sponsor": "NSF DMR MMN",
+      "collaborators": [],
+      "description": ""
+    },
+    {
+      "title": "BIG: Building Intelligent Gradients in additively manufactured space engine materials via a multiscale predictive framework",
+      "sponsor": "NASA ESI",
+      "collaborators": ["Jerard Gordon (Umich, PI)", "Wenda Tan (Umich)"],
+      "description": ""
+    },
+    {
+      "title": "MRI: Acquisition of Compact Mechanical Testing System for Structural, Archaeological, and High-Temperature Materials",
+      "sponsor": "NSF CMMI MOMS",
+      "collaborators": [
+        "Steven Tipton (UTulsa)",
+        "Michael Keller (UTulsa)",
+        "Miriam Belmaker (UTulsa)",
+        "Hema Ramsurn (UTulsa)"
+      ],
+      "description": ""
+    }
+  ],
+  "funders": {
+    "image": "/images/funders.jpg",
+    "alt": "Logos of AMDG sponsors and partners: NSF, Office of Naval Research, AFOSR, NASA, ERDC, ASME, SMST (ASM International), Confluent Medical Technologies, Veeco, the International Digital Image Correlation Society, and The University of Tulsa.",
+    "heading": "Sponsors & Partners"
+  }
+}

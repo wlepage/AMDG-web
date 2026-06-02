@@ -1,0 +1,26 @@
+---
+import { SITE } from '@lib/content';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer on-dark">
+  <div class="container site-footer__inner">
+    <p class="site-footer__copy">© {year} {SITE.name} • {SITE.affiliationShort}</p>
+    <nav class="site-footer__nav" aria-label="Footer">
+      <a href="#home">Back to top ↑</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--c-brand-secondary); color: var(--c-on-brand);
+    padding-block: var(--space-6); margin-top: var(--space-8);
+  }
+  .site-footer__inner {
+    display: flex; flex-wrap: wrap; gap: var(--space-4);
+    align-items: center; justify-content: space-between;
+  }
+  .site-footer__copy { font-size: 0.92rem; color: var(--c-on-brand-muted); }
+  .site-footer__nav a { font-size: 0.92rem; color: var(--c-on-brand-muted); }
+  .site-footer__nav a:hover { color: var(--c-on-brand); }
+</style>

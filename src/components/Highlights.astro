@@ -1,0 +1,133 @@
+---
+import Section from './Section.astro';
+import { HIGHLIGHTS } from '@lib/content';
+
+// Color map for the different kinds of update. Each pill is tinted from its
+// hue via color-mix, so this single value drives text, background, and border.
+const TAG_COLORS: Record<string, string> = {
+  award: '#C99700',       // gold
+  publication: '#2563EB', // bright blue
+  project: '#16A34A',     // green
+  grant: '#7C3AED',       // violet
+  thesis: '#0E7490',      // teal
+  feature: '#EA580C',     // orange
+};
+const tagColor = (t: string) => TAG_COLORS[t.toLowerCase()] ?? 'var(--c-muted-text)';
+
+// Show the five most recent items; the rest fold into one disclosure below.
+const recent = HIGHLIGHTS.slice(0, 5);
+const older = HIGHLIGHTS.slice(5);
+---
+<Section id="highlights" heading="Highlights" tint={true}>
+  <ol class="timeline">
+    {recent.map((h) => (
+      <li class="timeline__item">
+        <div class="timeline__date">
+          <time datetime={h.date}>{h.displayDate}</time>
+        </div>
+        <div class="timeline__body">
+          <p class="timeline__text" set:html={h.text}></p>
+          {h.link && (
+            <p class="timeline__doi">
+              <a href={h.link} rel="noopener noreferrer">{h.link.replace(/^https?:\/\//, '')}</a>
+            </p>
+          )}
+          {h.tags && h.tags.length > 0 && (
+            <ul class="tags" aria-label="Categories">
+              {h.tags.map((t) => <li class="tag" style={`--tag-c: ${tagColor(t)}`}>{t}</li>)}
+            </ul>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  {older.length > 0 && (
+    <details class="year-fold">
+      <summary class="year-fold__summary">
+        <span class="year-fold__year">Earlier highlights</span>
+        <svg class="year-fold__chevron" viewBox="0 0 20 20" aria-hidden="true" width="20" height="20">
+          <path d="M5 7.5 L10 12.5 L15 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </summary>
+      <ol class="timeline year-fold__list">
+        {older.map((h) => (
+          <li class="timeline__item">
+            <div class="timeline__date">
+              <time datetime={h.date}>{h.displayDate}</time>
+            </div>
+            <div class="timeline__body">
+              <p class="timeline__text" set:html={h.text}></p>
+              {h.link && (
+                <p class="timeline__doi">
+                  <a href={h.link} rel="noopener noreferrer">{h.link.replace(/^https?:\/\//, '')}</a>
+                </p>
+              )}
+              {h.tags && h.tags.length > 0 && (
+                <ul class="tags" aria-label="Categories">
+                  {h.tags.map((t) => <li class="tag" style={`--tag-c: ${tagColor(t)}`}>{t}</li>)}
+                </ul>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </details>
+  )}
+</Section>
+
+<style>
+  .timeline { list-style: none; margin: 0; padding: 0; max-width: 900px; }
+  .timeline__item {
+    display: grid; grid-template-columns: 7.5rem 1fr; gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--c-border);
+  }
+  .timeline__item:first-child { border-top: 0; }
+  .timeline__date {
+    font-weight: 600; color: var(--c-accent-strong);
+    font-variant-numeric: tabular-nums; padding-top: 2px;
+  }
+  .timeline__text { color: var(--c-text); }
+  .timeline__doi { margin-top: var(--space-2); font-size: 0.9rem; }
+  .timeline__doi a { word-break: break-word; }
+  .tags { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); padding: 0; }
+  .tag {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
+    color: color-mix(in srgb, var(--tag-c) 78%, #000);
+    background: color-mix(in srgb, var(--tag-c) 16%, #fff);
+    border: 1px solid color-mix(in srgb, var(--tag-c) 45%, #fff);
+    border-radius: 999px; padding: 3px var(--space-3);
+  }
+  .tag::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--tag-c); flex: 0 0 auto;
+  }
+
+  /* ---- Earlier highlights: a single line-divided disclosure (no box, no chevron) ---- */
+  .year-fold {
+    max-width: 900px; margin-top: var(--space-7);
+    border-top: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border);
+  }
+  .year-fold[open] { border-bottom: 0; }
+  .year-fold__summary {
+    display: flex; align-items: center; gap: var(--space-3);
+    cursor: pointer; list-style: none;
+    padding: var(--space-4) 0;
+    font-family: var(--font-serif); font-weight: 700; font-size: 1.15rem; color: var(--c-text);
+  }
+  .year-fold__summary::-webkit-details-marker { display: none; }
+  .year-fold__year { font-variant-numeric: tabular-nums; flex: 1; }
+  .year-fold__summary:hover .year-fold__year { color: var(--c-brand-primary); }
+  .year-fold__chevron { color: var(--c-muted-text); transition: transform 0.2s ease; flex: 0 0 auto; }
+  .year-fold[open] .year-fold__chevron { transform: rotate(180deg); }
+  .year-fold__list { padding: 0 0 var(--space-4); }
+  .year-fold__list .timeline__item:first-child { border-top: 1px solid var(--c-border); }
+
+  @media (max-width: 560px) {
+    .timeline__item { grid-template-columns: 1fr; gap: var(--space-2); }
+    .timeline__date { padding-top: 0; }
+  }
+</style>

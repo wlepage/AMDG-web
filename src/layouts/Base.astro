@@ -1,0 +1,48 @@
+---
+import '../styles/global.css';
+import { SITE, THEME, themeCssVars } from '@lib/content';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+const pageTitle = title ? `${title} · ${SITE.shortName}` : `${SITE.name}`;
+const pageDesc = description ?? SITE.description;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const themeVars = themeCssVars();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content={THEME.tokens.brandPrimary} />
+
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Preload the two most-used fonts to limit layout shift -->
+    <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/oldstandard-700.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Theme tokens from content/theme.json (single source of truth) -->
+    <style set:html={`:root{\n${themeVars}\n}`}></style>
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <slot />
+  </body>
+</html>

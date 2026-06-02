@@ -1,0 +1,19 @@
+{
+  "name": "The Advanced Materials Design Group",
+  "shortName": "AMDG",
+  "acronymExpanded": "Advanced Materials Design Group",
+  "descriptor": "We pioneer high-performance materials for load-bearing and heat-resistant applications.",
+  "affiliation": "The University of Tulsa · Department of Mechanical Engineering",
+  "affiliationShort": "The University of Tulsa",
+  "url": "https://amdg.science",
+  "description": "The Advanced Materials Design Group (AMDG) at The University of Tulsa designs, manufactures, and characterizes high-performance materials for load-bearing and heat-resistant applications in aerospace, energy, medicine, and beyond.",
+  "nav": [
+    { "id": "home", "label": "Home" },
+    { "id": "about", "label": "About" },
+    { "id": "highlights", "label": "Highlights" },
+    { "id": "projects", "label": "Projects" },
+    { "id": "team", "label": "Team" },
+    { "id": "alumni", "label": "Alumni" },
+    { "id": "contact", "label": "Contact" }
+  ]
+}

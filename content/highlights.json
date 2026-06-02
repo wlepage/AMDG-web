@@ -1,0 +1,206 @@
+{
+  "_comment": "Brief Updates / Highlights, newest first. 'date' is ISO (first of month) used for sorting; 'displayDate' preserves the label as originally written. Add new entries anywhere — the component re-sorts by date, newest first.",
+  "items": [
+    {
+      "date": "2026-04-01",
+      "displayDate": "April 2026",
+      "tags": ["award"],
+      "text": "Parker Green was awarded a 2026 NSF Graduate Research Fellowship. Parker is headed to the Colorado School of Mines for a Ph.D. in metallurgical and materials engineering. Congrats, Parker!"
+    },
+    {
+      "date": "2026-05-01",
+      "displayDate": "May 2026",
+      "tags": ["thesis"],
+      "text": "Keri Sharp earned her M.S. (ALD fiber coatings and sintering aids for SiC/Cf ceramic-matrix composites) and is headed to Wilson Sporting Goods in Chicago as a Research Engineer. Congrats, Keri!"
+    },
+    {
+      "date": "2025-07-01",
+      "displayDate": "July 2025",
+      "tags": ["thesis"],
+      "text": "Michael Lester defended his M.S. thesis on functionally graded Ti-Nb-Cu alloys by directed energy deposition, and is continuing in the group as a Ph.D. student. Congrats, Michael!"
+    },
+    {
+      "date": "2026-05-01",
+      "displayDate": "May 2026",
+      "tags": ["publication"],
+      "text": "In collaboration with the Keller and Ramsurn groups, our data-driven study of preceramic polymers for SiC composites is published in <em>ACS Applied Engineering Materials</em>."
+    },
+    {
+      "date": "2026-03-01",
+      "displayDate": "Mar. 2026",
+      "tags": ["publication"],
+      "text": "In collaboration with G.RAU Inc., our paper on the microstructural analysis of inclusions in six Nitinol variants is published in <em>Metallography, Microstructure, and Analysis</em>.",
+      "link": "https://doi.org/10.1007/s13632-026-01325-3"
+    },
+    {
+      "date": "2026-01-01",
+      "displayDate": "Jan. 2026",
+      "tags": ["publication"],
+      "text": "In collaboration with the Keller and Ramsurn groups, our paper on the thermal curing of an allyl-functionalized preceramic polymer is published in the <em>Journal of the American Ceramic Society</em>.",
+      "link": "https://doi.org/10.1111/jace.70559"
+    },
+    {
+      "date": "2026-05-01",
+      "displayDate": "May 2026",
+      "tags": ["project"],
+      "text": "We are grateful and honored to receive an Office of Naval Research award (Aerospace Materials and Structures) for Coated Powders for Cold Spray, with Christopher Schuh (Northwestern) and Luke Brewer (Alabama)."
+    },
+    {
+      "date": "2025-03-01",
+      "displayDate": "Mar. 2025",
+      "tags": ["publication"],
+      "text": "Evan Isbell's Battery Smarts work on public knowledge and habits of charging lithium-ion cells is published in <em>IEEE Transactions on Technology and Society</em>.",
+      "link": "https://doi.org/10.1109/TTS.2025.3546937"
+    },
+    {
+      "date": "2024-11-01",
+      "displayDate": "Nov. 2024",
+      "tags": ["project"],
+      "text": "We received a NASA Oklahoma Research Initiation Grant for Precise Oxide Dispersion via Coated Metal Powders."
+    },
+    {
+      "date": "2025-11-01",
+      "displayDate": "Nov 2025",
+      "tags": ["award"],
+      "text": "Parker Green took first prize at the M.R. Mitchell Student Presentation Forum at the 23rd International ASTM/ESIS Symposium on Fatigue and Fracture Mechanics in Atlanta. Way to go, Parker!"
+    },
+    {
+      "date": "2025-11-01",
+      "displayDate": "Nov 2025",
+      "tags": ["publication"],
+      "text": "In collaboration with Keller and Ramsurn groups, our review on hybrid processing for SiC-matrix CMCs is published in <em>Ceramics International</em>."
+    },
+    {
+      "date": "2025-04-01",
+      "displayDate": "April 2025",
+      "tags": ["award"],
+      "text": "Parker Green took first prize from among 25 students at the Oklahoma Research Day at the Capitol. Well done, Parker!"
+    },
+    {
+      "date": "2025-04-01",
+      "displayDate": "April 2025",
+      "tags": ["publication"],
+      "text": "Our paper on sintered Ti-6Al-4V is published in <em>Experimental Mechanics</em>."
+    },
+    {
+      "date": "2025-02-01",
+      "displayDate": "Feb. 2025",
+      "tags": ["publication"],
+      "text": "In collaboration with Sangid group from Purdue, our paper on transient liquid phase smoothing is published in <em>Materials &amp; Design</em>."
+    },
+    {
+      "date": "2024-12-01",
+      "displayDate": "Dec 2024",
+      "tags": ["thesis"],
+      "text": "Eathan Devine defended his M.S. thesis, The thermal and mechanical properties of an additive-manufactured Ti-6Al-4V (Ti64) alloy and a wrought nickel-titanium (NiTi) alloy. Eathan is headed to the National Institute for Aviation Research in Wichita to join the R&D group on metal additive manufacturing. Congrats, Eathan!"
+    },
+    {
+      "date": "2024-10-01",
+      "displayDate": "Oct. 2024",
+      "tags": ["project"],
+      "text": "We are grateful and honored to be a part of a team at The University of Tulsa working on a $1.25M project with DoE to understand the effects of blended hydrogen and natural gas on pipeline distribution systems."
+    },
+    {
+      "date": "2024-04-01",
+      "displayDate": "April 2024",
+      "tags": ["thesis"],
+      "text": "Kendall Yetter defended his M.S. thesis, A Surface Remelting Technique for Smoothing AM Surfaces. Kendall is headed to IperionX to join their R&D group in Salt Lake. Congrats, Kendall!"
+    },
+    {
+      "date": "2024-04-01",
+      "displayDate": "April 2024",
+      "tags": ["project"],
+      "text": "We are grateful and honored to be a part of a team at The University of Tulsa working on a $1.5M project with AFOSR to build capacity in advanced materials research."
+    },
+    {
+      "date": "2024-01-01",
+      "displayDate": "Jan. 2024",
+      "tags": ["project"],
+      "text": "We are grateful and honored to receive an NSF CAREER award, titled Understanding and controlling the sintering of metal powders with nanoscale additives."
+    },
+    {
+      "date": "2023-10-01",
+      "displayDate": "Oct. 2023",
+      "tags": ["award"],
+      "text": "Nathan Rendon was selected as the winner of the CVID 2023 conference student presentation competition. Well done, Nathan!"
+    },
+    {
+      "date": "2023-10-01",
+      "displayDate": "Oct. 2023",
+      "tags": ["award"],
+      "text": "Jackson Habrock was selected as a University of Tulsa 2023 Top 10 Senior. Congrats, Jackson!"
+    },
+    {
+      "date": "2023-08-01",
+      "displayDate": "Aug. 2023",
+      "tags": ["project"],
+      "text": "We are grateful and honored to lead a team of researchers for a new first-of-kind in-SEM mechanical testing instrument with unprecedented speed, force, and temperature capacity. The acquisition is supported through an NSF MRI Track 1 award (no. 2320690)."
+    },
+    {
+      "date": "2022-12-01",
+      "displayDate": "Dec. 2022",
+      "tags": ["project"],
+      "text": "We are grateful and honored to be a part of a team at the University of Tulsa working on a project titled VR for Smart Installation Experimentation and Security Analysis with the U.S. Army Engineer Research and Development Center (ERDC)."
+    },
+    {
+      "date": "2022-11-01",
+      "displayDate": "Nov. 2022",
+      "tags": ["project"],
+      "text": "We are grateful and honored to be a part of a NASA 2022 ESI team with Jerard Gordon (PI, Umich), Wenda Tan (Co-PI, Umich), and William LePage (Co-PI, Utulsa). Our project is titled BIG: Building Intelligent Gradients in additively manufactured space engine materials via a multiscale predictive framework."
+    },
+    {
+      "date": "2022-10-01",
+      "displayDate": "Oct. 2022",
+      "tags": ["award"],
+      "text": "Megan Hernadi was selected as a University of Tulsa 2022 Top 10 Freshman. Congrats, Megan!"
+    },
+    {
+      "date": "2022-03-01",
+      "displayDate": "Mar. 2022",
+      "tags": ["award"],
+      "text": "Kendall Yetter was selected as the champion in the University of Siegen Science Slam and won a two-week research visit in Siegen in summer 2022, as part of University of Siegen's Pop-Up at Tulsa. Congrats, Kendall!"
+    },
+    {
+      "date": "2021-10-01",
+      "displayDate": "Oct. 2021",
+      "tags": ["project"],
+      "text": "We are grateful and honored to be a part of a team at the University of Tulsa working on a project titled Adaptive OT Threat Analysis Technology with the U.S. Army Engineer Research and Development Center (ERDC)."
+    },
+    {
+      "date": "2021-08-01",
+      "displayDate": "Aug. 2021",
+      "tags": ["feature"],
+      "text": "Malia Aurigemma and her \"Battery Smarts\" project—which builds upon the foundation from Evan Isbell's work—were featured by The University of Tulsa College of Engineering and Natural Sciences."
+    },
+    {
+      "date": "2021-04-01",
+      "displayDate": "Apr. 2021",
+      "tags": ["thesis"],
+      "text": "Victoria Tucker defended her M.S. thesis, Interlaboratory Round Robin Study of Errors and Best Practices for Scanning Electron Microscope Digital Image Correlation. She is headed to Purdue with a Ross Fellowship to study superalloys with Mike Titus. Congrats, Victoria!"
+    },
+    {
+      "date": "2021-04-01",
+      "displayDate": "Apr. 2021",
+      "tags": ["project"],
+      "text": "We are grateful and honored to be selected as one of the Defense Established Program to Stimulate Competitive Research FY20 Awards to pursue our work on A New Surface Engineering Approach for Fatigue-Resistant AM Microlattices."
+    },
+    {
+      "date": "2021-03-01",
+      "displayDate": "Mar. 2021",
+      "tags": ["award"],
+      "text": "Evan Isbell was one of 21 students selected from around Oklahoma to present at the 26th annual Research Day at the Capitol. Evan presented his work on Assessing Public Knowledge and Habits of Battery Charging. Congrats, Evan!"
+    },
+    {
+      "date": "2021-03-01",
+      "displayDate": "Mar. 2021",
+      "tags": ["project"],
+      "text": "We are grateful and honored to be selected for the 2021 SMST Founders' Grant to pursue our work on Zooming in on Inclusions and Their Role in the Fatigue of NiTi Devices."
+    },
+    {
+      "date": "2020-11-01",
+      "displayDate": "Nov. 2020",
+      "tags": ["project"],
+      "text": "We are grateful and honored to be selected as one of the 2020 Haythornthwaite Research Initiation Grant selections to pursue our work on Seeing Cracks Clearly."
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "_comment": "Alumni, grouped logically for an accordion. 'masters' members carry thesis + placement detail; 'lists' groups are simple name rosters. Everything from the original site is preserved.",
+  "groups": [
+    {
+      "id": "postdocs",
+      "title": "Postdoctoral Fellows",
+      "type": "detailed",
+      "members": [
+        {
+          "name": "Slavica Porobic (2025–2026)",
+          "placement": "Accepted a position as an Assistant Research Professor at the Vinča Institute of Nuclear Sciences in Belgrade, Serbia"
+        }
+      ]
+    },
+    {
+      "id": "masters",
+      "title": "Master's Students",
+      "type": "detailed",
+      "members": [
+        {
+          "name": "Keri Sharp (2026)",
+          "thesis": "Atomic layer deposition for fiber coatings and sintering aids for SiC/Cf ceramic-matrix composites",
+          "placement": "Accepted a position as a Research Engineer at Wilson Sporting Goods in Chicago, Illinois"
+        },
+        {
+          "name": "Eathan Devine (2024)",
+          "thesis": "The thermal and mechanical properties of an additive-manufactured Ti-6Al-4V (Ti64) alloy and a wrought nickel-titanium (NiTi) alloy",
+          "placement": "Accepted a position as a Research Engineer in the Advanced Materials group at the National Institute for Aviation Research in Wichita, Kansas"
+        },
+        {
+          "name": "Kendall Yetter (2024)",
+          "thesis": "A Surface Remelting Technique for Smoothing AM Surfaces",
+          "placement": "Accepted a position as a Research Metallurgist at IperionX and their R&D group in Salt Lake City, Utah"
+        },
+        {
+          "name": "Victoria Tucker (2021)",
+          "thesis": "Interlaboratory Round Robin Study of Errors and Best Practices for Scanning Electron Microscope Digital Image Correlation",
+          "placement": "Earned a Ross Fellowship for doctoral studies at Purdue University and joined the Ph.D. program in Materials Science at Purdue"
+        }
+      ]
+    },
+    {
+      "id": "undergraduate",
+      "title": "Undergraduate Students",
+      "type": "names",
+      "members": [
+        "Amanda Lafrancois",
+        "Anna Godinez",
+        "Avery Dodson",
+        "Ben Blittschau",
+        "Caleb Freese",
+        "Caroline Port",
+        "Diego Tober",
+        "Drew Dozier",
+        "Eduardo Pereyra",
+        "Emma Daharsh",
+        "Erika Brock",
+        "Erin Weiss",
+        "Evan Isbell",
+        "Gage McCollum",
+        "Georgia Hilburn",
+        "Jackson Habrock",
+        "Jared Hallahan",
+        "Joshua Brooks",
+        "Kali Hauther",
+        "Kyle White",
+        "Malia Aurigemma",
+        "Megan Hernadi",
+        "Nicolas Bendele",
+        "Orion Levasheff",
+        "Parker Green",
+        "Pedro Lugo",
+        "Rianne Brown",
+        "Rodolfo Coronado",
+        "Rose Fontana",
+        "Sam Dueñas",
+        "Tait Douglas",
+        "Tanner McElroy",
+        "Teresa Valenzuela",
+        "Vincent Ume-Ezeoke",
+        "Will Wheet"
+      ]
+    },
+    {
+      "id": "turc",
+      "title": "TURC Junior Scholars (high school)",
+      "type": "names",
+      "members": ["Curt Schwager", "Daniel Flores", "Jameson Griffin"]
+    }
+  ]
+}

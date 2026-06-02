@@ -1,0 +1,20 @@
+{
+  "_comment": "Semantic color tokens for AMDG. Palette: 'Slate Navy & Cyan'. Hand-authored (the UTulsa palette was intentionally dropped). All text pairings below meet WCAG 2.1 AA. To regenerate/seed from another site's CSS, run `npm run theme -- <url>` (see scripts/extract-theme.mjs), but this file is the committed source of truth.",
+  "name": "Slate Navy & Cyan",
+  "tokens": {
+    "brandPrimary": "#1E3A5F",
+    "brandSecondary": "#14283F",
+    "brandAccent": "#06B6D4",
+    "accentStrong": "#0E6F86",
+    "background": "#FFFFFF",
+    "surface": "#F1F5F9",
+    "surfaceAlt": "#E7EEF5",
+    "text": "#0F1B2A",
+    "mutedText": "#51637A",
+    "onBrand": "#FFFFFF",
+    "onBrandMuted": "#C6D6E8",
+    "border": "#D5DEE8",
+    "focusRing": "#1E3A5F",
+    "focusGlow": "#22D3EE"
+  }
+}

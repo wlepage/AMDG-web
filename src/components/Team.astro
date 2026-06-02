@@ -1,0 +1,139 @@
+---
+import Section from './Section.astro';
+import { TEAM, initials } from '@lib/content';
+
+// Classify a free-text degree line so we can show the right mortarboard.
+type Level = 'phd' | 'ms' | 'bs' | null;
+function degreeLevel(s: string): Level {
+  const t = s.toLowerCase();
+  if (/ph\.?\s?d|d\.?phil|doctor/.test(t)) return 'phd';
+  if (/\bm\.?\s?s\b|m\.?s\.?e|m\.?sc|m\.?eng|\bm\.?a\b|master/.test(t)) return 'ms';
+  if (/\bb\.?\s?s\b|b\.?eng|\bb\.?a\b|bachelor/.test(t)) return 'bs';
+  return null;
+}
+const LEVEL_LABEL: Record<string, string> = {
+  phd: 'Doctoral degree',
+  ms: "Master's degree",
+  bs: "Bachelor's degree",
+};
+// Highest degree first (Ph.D. → M.S. → B.S.) within a card.
+const DEGREE_RANK: Record<string, number> = { phd: 3, ms: 2, bs: 1 };
+const rank = (s: string) => DEGREE_RANK[degreeLevel(s) ?? ''] ?? 0;
+---
+<Section id="team" heading="Team" tint={true}>
+  {TEAM.map((group) => (
+    <div class="team-group">
+      <h3 class="team-group__title">{group.title}</h3>
+      <ul class="people">
+        {group.members.map((person) => {
+          const education = person.education ? [...person.education].sort((a, b) => rank(b) - rank(a)) : [];
+          const hasEducation = education.length > 0;
+          return (
+          <li class="person card">
+            <div class="person__avatar">
+              {person.photo ? (
+                <img src={person.photo} alt={`Portrait of ${person.name}`} width="160" height="160" loading="lazy" decoding="async" />
+              ) : (
+                <span class="person__monogram" aria-hidden="true">{initials(person.name)}</span>
+              )}
+            </div>
+            <div class="person__info">
+              <p class="person__name">{person.name}</p>
+              {person.role && <p class:list={['person__role', { 'person__role--meta': !hasEducation }]}>{person.role}</p>}
+              {person.coAdvisor && <p class="person__coadvisor">{person.coAdvisor}</p>}
+              {hasEducation && (
+                <ul class="person__edu">
+                  {education.map((e) => {
+                    const level = degreeLevel(e);
+                    return (
+                      <li>
+                        <svg class="cap" data-level={level ?? 'na'} viewBox="0 0 24 18" width="20" height="15" role="img" aria-label={level ? LEVEL_LABEL[level] : 'Degree'}>
+                          <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+                            <path d="M12 2 L22.5 6.5 L12 11 L1.5 6.5 Z" />
+                            <path d="M6 8.4 V12.2 C6 13.7 8.7 14.8 12 14.8 C15.3 14.8 18 13.7 18 12.2 V8.4" />
+                            {(level === 'ms' || level === 'phd') && (
+                              <>
+                                <path d="M12 6.5 H21 V11" />
+                                <circle cx="21" cy="11.8" r="1" fill="currentColor" stroke="none" />
+                              </>
+                            )}
+                          </g>
+                        </svg>
+                        <span>{e}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+              {person.interests && person.interests.length > 0 && (
+                <p class="person__interests">{person.interests.join(' · ')}</p>
+              )}
+              {(person.email || (person.links && person.links.length > 0)) && (
+                <ul class="person__links">
+                  {person.email && (
+                    <li><a href={`mailto:${person.email}`}>Email</a></li>
+                  )}
+                  {person.links?.map((l) => (
+                    <li><a href={l.href} rel="noopener noreferrer">{l.label}</a></li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </li>
+          );
+        })}
+      </ul>
+    </div>
+  ))}
+</Section>
+
+<style>
+  .team-group + .team-group { margin-top: var(--space-7); }
+  .team-group__title {
+    font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em;
+    font-family: var(--font-sans); font-weight: 600; color: var(--c-accent-strong);
+    margin-bottom: var(--space-5);
+  }
+  .people {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: var(--space-5);
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  .section--tint .person { background: var(--c-background); }
+  .person {
+    display: flex; flex-direction: column; gap: var(--space-4);
+    align-items: stretch;
+  }
+  .person__avatar {
+    flex: 0 0 auto; width: 112px; height: 112px; border-radius: 50%;
+    overflow: hidden; background: var(--c-brand-primary);
+    display: grid; place-items: center; align-self: center;
+  }
+  .person__avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .person__monogram {
+    color: var(--c-on-brand); font-family: var(--font-serif);
+    font-weight: 700; font-size: 2rem; letter-spacing: 0.02em;
+  }
+  .person__info { min-width: 0; }
+  .person__name { font-weight: 700; font-size: 1.1rem; text-align: center; }
+  .person__role { color: var(--c-text); text-align: center; }
+  /* Undergrad "degree + year" line: match the grad-student description text. */
+  .person__role--meta { font-size: 0.9rem; color: var(--c-muted-text); }
+  .person__coadvisor, .person__interests { color: var(--c-muted-text); font-size: 0.92rem; }
+  .person__coadvisor { margin-top: var(--space-1); font-style: italic; }
+  .person__edu {
+    list-style: none; margin: var(--space-3) 0 0; padding: 0;
+    color: var(--c-muted-text); font-size: 0.9rem; line-height: 1.45;
+  }
+  .person__edu li {
+    display: grid; grid-template-columns: 22px 1fr; gap: var(--space-3);
+    align-items: start;
+  }
+  .person__edu li + li { margin-top: var(--space-2); }
+  .cap { color: var(--c-accent-strong); margin-top: 0.15em; flex: 0 0 auto; }
+  .person__links {
+    list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-3);
+    margin: var(--space-3) 0 0; padding: 0;
+  }
+  .person__links a { font-weight: 600; font-size: 0.9rem; }
+</style>

@@ -1,0 +1,35 @@
+{
+  "_comment": "Hero stage. mode 'carousel' shows the slides below; mode 'video' shows an embed (set video.type to 'youtube' | 'vimeo' | 'file' and fill the matching field), and falls back to the carousel if no video source is given. See README > Hero & video for captions/transcript expectations.",
+  "mode": "carousel",
+  "eyebrow": "At The University of Tulsa",
+  "kicker": "Design · Manufacture · Characterize",
+  "autoAdvanceMs": 7000,
+  "video": {
+    "type": null,
+    "youtubeId": "",
+    "vimeoId": "",
+    "src": "",
+    "poster": "",
+    "title": "",
+    "captionsHref": "",
+    "transcriptHref": ""
+  },
+  "slides": [
+    {
+      "src": "/images/hero/building.jpg",
+      "alt": "Stephenson Hall at The University of Tulsa, the stone building that houses the AMDG lab, photographed at sunset."
+    },
+    {
+      "src": "/images/hero/sintering.jpg",
+      "alt": "Scanning electron microscope image series showing copper-coated Ti-6Al-4V powder particles forming sintering necks as temperature increases from 35 to 950 degrees Celsius."
+    },
+    {
+      "src": "/images/hero/research-overview.jpg",
+      "alt": "Diagram of the group's research spanning basic science, core capabilities, and applied research in aerospace, biomedical, energy, defense, and manufacturing."
+    },
+    {
+      "src": "/images/hero/length-scales.jpg",
+      "alt": "Figure showing how the group's characterization methods span nanoscale, microscale, and mesoscale length scales of sintering."
+    }
+  ]
+}

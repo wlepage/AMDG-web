@@ -1,0 +1,280 @@
+---
+import { SITE, HERO } from '@lib/content';
+
+const { mode, eyebrow, autoAdvanceMs, slides, video } = HERO;
+
+// Decide what the stage shows. Video mode only "wins" if a usable source exists;
+// otherwise we gracefully fall back to the carousel placeholder.
+const hasVideo =
+  mode === 'video' &&
+  ((video.type === 'youtube' && video.youtubeId) ||
+    (video.type === 'vimeo' && video.vimeoId) ||
+    (video.type === 'file' && video.src));
+const stage = hasVideo ? 'video' : 'carousel';
+const n = slides.length;
+const canAutoAdvance = stage === 'carousel' && n > 1 && autoAdvanceMs > 0;
+---
+<section id="home" class="hero" aria-labelledby="home-title">
+  <div class="container hero__grid">
+    <div class="hero__text">
+      <h1 id="home-title">{SITE.name}</h1>
+      <p class="hero__affil">{eyebrow}</p>
+    </div>
+
+    <div class="hero__stage">
+      {stage === 'video' ? (
+        <div class="stage-media">
+          {video.type === 'youtube' && (
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}`}
+              title={video.title || `${SITE.shortName} video`}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          )}
+          {video.type === 'vimeo' && (
+            <iframe
+              src={`https://player.vimeo.com/video/${video.vimeoId}`}
+              title={video.title || `${SITE.shortName} video`}
+              loading="lazy"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          )}
+          {video.type === 'file' && (
+            <video controls preload="metadata" poster={video.poster || undefined}>
+              <source src={video.src} />
+              {video.captionsHref && (
+                <track kind="captions" src={video.captionsHref} srclang="en" label="English" default />
+              )}
+            </video>
+          )}
+        </div>
+      ) : (
+        <div
+          class="carousel"
+          data-carousel
+          data-interval={canAutoAdvance ? autoAdvanceMs : 0}
+          role="group"
+          aria-roledescription="carousel"
+          aria-label="Featured images from the lab"
+        >
+          <div class="carousel__viewport">
+            <div class="carousel__track">
+              {slides.map((slide, i) => (
+                <div
+                  class:list={['carousel__slide', { 'is-active': i === 0 }]}
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label={`${i + 1} of ${n}`}
+                  data-slide
+                  aria-hidden={i === 0 ? 'false' : 'true'}
+                >
+                  <img
+                    src={slide.src}
+                    alt={slide.alt}
+                    width="1600"
+                    height="900"
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {n > 1 && (
+            <div class="carousel__controls">
+              <button class="carousel__btn" type="button" data-prev>
+                <span aria-hidden="true">‹</span>
+                <span class="visually-hidden">Previous slide</span>
+              </button>
+
+              <div class="carousel__dots" role="group" aria-label="Choose a slide">
+                {slides.map((_, i) => (
+                  <button
+                    class="carousel__dot"
+                    type="button"
+                    data-dot={i}
+                    aria-label={`Show slide ${i + 1} of ${n}`}
+                    aria-current={i === 0 ? 'true' : 'false'}
+                  ></button>
+                ))}
+              </div>
+
+              {canAutoAdvance && (
+                <button class="carousel__btn carousel__btn--play" type="button" data-playpause aria-pressed="true">
+                  <span class="carousel__icon" aria-hidden="true"></span>
+                  <span class="visually-hidden" data-playpause-label>Pause automatic slide rotation</span>
+                </button>
+              )}
+
+              <button class="carousel__btn" type="button" data-next>
+                <span aria-hidden="true">›</span>
+                <span class="visually-hidden">Next slide</span>
+              </button>
+            </div>
+          )}
+
+          <p class="visually-hidden" data-status aria-live="polite"></p>
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background:
+      radial-gradient(120% 120% at 85% -10%, color-mix(in srgb, var(--c-brand-accent) 14%, transparent), transparent 55%),
+      linear-gradient(180deg, var(--c-surface), var(--c-background));
+    padding-block: clamp(var(--space-7), 7vw, var(--space-9));
+    border-bottom: 1px solid var(--c-border);
+  }
+  .hero__grid {
+    display: grid; gap: clamp(var(--space-6), 5vw, var(--space-8));
+    grid-template-columns: 1fr; align-items: center;
+  }
+  @media (min-width: 920px) {
+    .hero__grid { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); }
+  }
+  .hero__affil {
+    margin-top: var(--space-4);
+    font-family: var(--font-sans);
+    text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600;
+    font-size: clamp(0.85rem, 1.6vw, 1rem); color: var(--c-accent-strong);
+  }
+
+  /* ---- Stage ---- */
+  .hero__stage { width: 100%; }
+  .stage-media, .carousel__viewport {
+    aspect-ratio: 16 / 9; border-radius: var(--radius-lg);
+    overflow: hidden; box-shadow: var(--shadow-md);
+    border: 1px solid var(--c-border);
+    background:
+      linear-gradient(135deg, var(--c-brand-secondary), var(--c-brand-primary));
+  }
+  .stage-media iframe, .stage-media video { width: 100%; height: 100%; border: 0; display: block; }
+
+  .carousel { position: relative; }
+  .carousel__track { position: relative; height: 100%; }
+  .carousel__slide {
+    position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease;
+    display: grid; place-items: center;
+  }
+  .carousel__slide.is-active { opacity: 1; }
+  .carousel__slide img {
+    width: 100%; height: 100%; object-fit: contain; /* show full figures, no cropping */
+    background: color-mix(in srgb, var(--c-brand-secondary) 92%, black);
+  }
+
+  .carousel__controls {
+    display: flex; align-items: center; justify-content: center; gap: var(--space-3);
+    margin-top: var(--space-4); flex-wrap: wrap;
+  }
+  .carousel__btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 999px; cursor: pointer;
+    background: var(--c-background); color: var(--c-brand-primary);
+    border: 1px solid var(--c-border); font-size: 1.4rem; line-height: 1;
+  }
+  .carousel__btn:hover { border-color: var(--c-brand-primary); }
+  .carousel__icon {
+    width: 12px; height: 12px;
+    border-style: double; border-width: 0 0 0 12px; border-color: currentColor; /* pause bars */
+  }
+  .carousel__btn--play[aria-pressed='false'] .carousel__icon {
+    width: 0; height: 0; border-style: solid;
+    border-width: 7px 0 7px 12px; border-color: transparent transparent transparent currentColor; /* play triangle */
+  }
+  .carousel__dots { display: inline-flex; gap: var(--space-1); align-items: center; }
+  /* 24x24 hit target (WCAG 2.2 SC 2.5.8) with a small visible dot drawn inside. */
+  .carousel__dot {
+    width: 24px; height: 24px; padding: 0; cursor: pointer;
+    background: transparent; border: 0; display: inline-grid; place-items: center;
+  }
+  .carousel__dot::before {
+    content: ''; width: 11px; height: 11px; border-radius: 999px;
+    background: var(--c-border); border: 1px solid var(--c-muted-text);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .carousel__dot[aria-current='true']::before { background: var(--c-brand-accent); border-color: var(--c-accent-strong); }
+</style>
+
+<script>
+  type CarouselEl = HTMLElement;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  document.querySelectorAll<CarouselEl>('[data-carousel]').forEach((root) => {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-slide]'));
+    const dots = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-dot]'));
+    const prev = root.querySelector<HTMLButtonElement>('[data-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-next]');
+    const playBtn = root.querySelector<HTMLButtonElement>('[data-playpause]');
+    const playLabel = root.querySelector<HTMLElement>('[data-playpause-label]');
+    const status = root.querySelector<HTMLElement>('[data-status]');
+    const interval = Number(root.dataset.interval || 0);
+    if (slides.length < 2) return;
+
+    let index = 0;
+    let timer: number | undefined;
+    let playing = false;
+
+    const render = (announce = false) => {
+      slides.forEach((s, i) => {
+        const active = i === index;
+        s.classList.toggle('is-active', active);
+        s.setAttribute('aria-hidden', String(!active));
+      });
+      dots.forEach((d, i) => d.setAttribute('aria-current', String(i === index)));
+      if (announce && status) {
+        const img = slides[index].querySelector('img');
+        status.textContent = `Slide ${index + 1} of ${slides.length}: ${img?.getAttribute('alt') ?? ''}`;
+      }
+    };
+
+    const go = (to: number, announce = true) => {
+      index = (to + slides.length) % slides.length;
+      render(announce);
+    };
+
+    const stop = () => {
+      playing = false;
+      if (timer) window.clearInterval(timer);
+      timer = undefined;
+      if (playBtn) playBtn.setAttribute('aria-pressed', 'false');
+      if (playLabel) playLabel.textContent = 'Start automatic slide rotation';
+    };
+    const start = () => {
+      if (!interval || reduceMotion.matches) return;
+      playing = true;
+      timer = window.setInterval(() => go(index + 1, false), interval);
+      if (playBtn) playBtn.setAttribute('aria-pressed', 'true');
+      if (playLabel) playLabel.textContent = 'Pause automatic slide rotation';
+    };
+
+    prev?.addEventListener('click', () => { stop(); go(index - 1); });
+    next?.addEventListener('click', () => { stop(); go(index + 1); });
+    dots.forEach((dot, i) => dot.addEventListener('click', () => { stop(); go(i); }));
+    playBtn?.addEventListener('click', () => (playing ? stop() : start()));
+
+    // Pause on hover/focus within; resume when leaving (if it was auto-playing).
+    let wasPlaying = false;
+    const pauseTemp = () => { if (playing) { wasPlaying = true; stop(); } };
+    const resumeTemp = () => { if (wasPlaying) { wasPlaying = false; start(); } };
+    root.addEventListener('mouseenter', pauseTemp);
+    root.addEventListener('mouseleave', resumeTemp);
+    root.addEventListener('focusin', pauseTemp);
+    root.addEventListener('focusout', (e) => {
+      if (!root.contains(e.relatedTarget as Node)) resumeTemp();
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) pauseTemp(); else resumeTemp();
+    });
+    reduceMotion.addEventListener('change', () => { if (reduceMotion.matches) stop(); });
+
+    render();
+    start(); // no-ops under reduced motion
+  });
+</script>

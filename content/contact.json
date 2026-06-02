@@ -1,0 +1,17 @@
+{
+  "_comment": "Contact details. Email renders as a mailto: link. No form or embedded map by design.",
+  "intro": "We are located in Stephenson Hall at The University of Tulsa.",
+  "lab": {
+    "label": "AMDG Main Lab",
+    "lines": ["Stephenson Hall 1030", "3193 East 5th Place", "Tulsa, OK 74104"]
+  },
+  "office": {
+    "label": "PI Office",
+    "lines": ["Dr. William LePage", "Stephenson Hall 2085"]
+  },
+  "email": "lepage@utulsa.edu",
+  "mapLink": {
+    "label": "View Stephenson Hall on Google Maps",
+    "href": "https://www.google.com/maps/search/?api=1&query=Stephenson+Hall+University+of+Tulsa+3193+East+5th+Place+Tulsa+OK+74104"
+  }
+}

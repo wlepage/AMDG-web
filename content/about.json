@@ -1,0 +1,30 @@
+{
+  "_comment": "Mission/Vision/Approach. Wording preserved from the original site (one typo fix: 'to addresses' -> 'to address'). The three Approach pillars restate the original 'integrated cycle' sentence as Design / Manufacture / Characterize; the descriptors recombine the source wording and add no new claims.",
+  "mission": {
+    "eyebrow": "Our Mission",
+    "text": "We seek to understand and develop more durable and sustainable materials, with a focus on materials for load-bearing and heat-resistant applications."
+  },
+  "vision": {
+    "eyebrow": "Our Vision",
+    "text": "Better materials.\nBest graduates."
+  },
+  "approach": {
+    "eyebrow": "Our Approach",
+    "intro": "We work in an integrated cycle of innovation that designs, manufactures, and characterizes materials.",
+    "pillars": [
+      {
+        "title": "Design",
+        "text": "We design materials for load-bearing and heat-resistant applications."
+      },
+      {
+        "title": "Manufacture",
+        "text": "We manufacture those materials through advanced processing."
+      },
+      {
+        "title": "Characterize",
+        "text": "We characterize them to build fundamental understanding."
+      }
+    ],
+    "closing": "Throughout, we seek fundamental understanding about materials to address critical challenges in aerospace, energy, medicine, and beyond."
+  }
+}

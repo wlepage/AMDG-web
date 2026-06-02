@@ -1,0 +1,25 @@
+---
+// Semantic section wrapper: <section> labelled by its own <h2> for landmarks.
+interface Props {
+  id: string;
+  heading: string;
+  eyebrow?: string;
+  tint?: boolean;
+  headingVisible?: boolean; // set false to keep the section accessibly labelled but visually hide the H2
+}
+const { id, heading, eyebrow, tint = false, headingVisible = true } = Astro.props;
+const titleId = `${id}-title`;
+---
+<section id={id} class:list={['section', { 'section--tint': tint }]} aria-labelledby={titleId}>
+  <div class="container">
+    <header class="section__head">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h2 id={titleId} class:list={[{ 'visually-hidden': !headingVisible }]}>{heading}</h2>
+    </header>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section__head { margin-bottom: var(--space-6); max-width: 70ch; }
+</style>

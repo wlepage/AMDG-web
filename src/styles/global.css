@@ -1,0 +1,153 @@
+/* ============================================================
+   AMDG global styles. Color tokens (--c-*) are injected from
+   content/theme.json by Base.astro, so this file references them
+   via var() and never hardcodes brand colors.
+   ============================================================ */
+
+/* ---- Self-hosted fonts ---- */
+@font-face {
+  font-family: 'Old Standard TT';
+  font-style: normal; font-weight: 400; font-display: swap;
+  src: url('/fonts/oldstandard-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Old Standard TT';
+  font-style: italic; font-weight: 400; font-display: swap;
+  src: url('/fonts/oldstandard-400i.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Old Standard TT';
+  font-style: normal; font-weight: 700; font-display: swap;
+  src: url('/fonts/oldstandard-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter var';
+  font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url('/fonts/inter.woff2') format('woff2');
+}
+
+/* ---- Design tokens ---- */
+:root {
+  --font-serif: 'Old Standard TT', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter var', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.5rem; --space-6: 2rem; --space-7: 3rem; --space-8: 4rem; --space-9: 6rem;
+
+  --radius: 12px; --radius-sm: 8px; --radius-lg: 20px;
+  --shadow-sm: 0 1px 2px rgba(15, 27, 42, 0.06), 0 1px 3px rgba(15, 27, 42, 0.08);
+  --shadow-md: 0 4px 12px rgba(15, 27, 42, 0.08), 0 2px 4px rgba(15, 27, 42, 0.06);
+
+  --container: 1120px;
+  --header-h: 64px;
+}
+
+/* ---- Reset-ish ---- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + var(--space-4));
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  font-family: var(--font-sans);
+  color: var(--c-text);
+  background: var(--c-background);
+  line-height: 1.65;
+  font-size: 1.0625rem;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img, picture, svg, video { display: block; max-width: 100%; height: auto; }
+ul, ol { padding: 0; }
+
+/* ---- Typography ---- */
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  line-height: 1.15;
+  font-weight: 700;
+  color: var(--c-text);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
+h3 { font-size: clamp(1.2rem, 2vw, 1.45rem); }
+p { text-wrap: pretty; }
+
+a { color: var(--c-brand-primary); text-underline-offset: 2px; }
+a:hover { color: var(--c-accent-strong); }
+
+/* ---- Layout helpers ---- */
+.container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--space-5); }
+.section { padding-block: var(--space-9); }
+.section + .section { padding-top: var(--space-7); }
+.section--tint { background: var(--c-surface); padding-block: var(--space-9); }
+.section + .section--tint { padding-top: var(--space-9); }
+.eyebrow {
+  font-family: var(--font-sans);
+  text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600;
+  font-size: 0.8rem; color: var(--c-accent-strong); margin-bottom: var(--space-3);
+}
+.lede { font-size: 1.2rem; color: var(--c-muted-text); max-width: 60ch; }
+
+/* ---- Skip link ---- */
+.skip-link {
+  position: absolute; left: var(--space-3); top: var(--space-3);
+  transform: translateY(-150%);
+  background: var(--c-brand-primary); color: var(--c-on-brand);
+  padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm);
+  z-index: 100; font-weight: 600; transition: transform 0.15s ease;
+}
+.skip-link:focus { transform: translateY(0); color: var(--c-on-brand); }
+
+/* ---- Robust, AA-compliant focus ring (works on light & dark surfaces) ---- */
+:where(a, button, [href], input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--c-focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--c-focus-glow) 45%, transparent);
+}
+/* On dark brand backgrounds, switch the ring to the bright accent for contrast. */
+.on-dark :where(a, button, [href], input, select, textarea, summary, [tabindex]):focus-visible {
+  outline-color: var(--c-focus-glow);
+}
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font: inherit; font-weight: 600; cursor: pointer;
+  padding: var(--space-3) var(--space-5);
+  border-radius: 999px; border: 2px solid transparent;
+  text-decoration: none; transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.btn--primary { background: var(--c-brand-primary); color: var(--c-on-brand); }
+.btn--primary:hover { background: var(--c-brand-secondary); color: var(--c-on-brand); }
+.btn--ghost { background: transparent; color: var(--c-brand-primary); border-color: var(--c-border); }
+.btn--ghost:hover { border-color: var(--c-brand-primary); color: var(--c-brand-primary); }
+
+/* ---- Cards ---- */
+.card {
+  background: var(--c-background);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

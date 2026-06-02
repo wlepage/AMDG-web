@@ -1,0 +1,60 @@
+---
+import Section from './Section.astro';
+import { ALUMNI } from '@lib/content';
+import type { AlumniMember } from '@lib/content';
+---
+<Section id="alumni" heading="Alumni">
+  {ALUMNI.map((group) => (
+    <div class="alumni-group">
+      <h3 class="alumni-group__title">{group.title}</h3>
+      {group.type === 'detailed' ? (
+        <ul class="alumni-detailed">
+          {(group.members as AlumniMember[]).map((m) => (
+            <li class="alumni-detailed__item">
+              <p class="alumni-detailed__name">{m.name}</p>
+              {m.thesis && (
+                <p class="alumni-detailed__line"><span class="lbl">Thesis:</span> <em>{m.thesis}</em></p>
+              )}
+              {m.placement && (
+                <p class="alumni-detailed__line"><span class="lbl">Placement:</span> {m.placement}</p>
+              )}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <ul class="alumni-names">
+          {(group.members as string[]).map((name) => <li>{name}</li>)}
+        </ul>
+      )}
+    </div>
+  ))}
+</Section>
+
+<style>
+  .alumni-group + .alumni-group { margin-top: var(--space-7); }
+  .alumni-group__title {
+    font-size: clamp(1.45rem, 2.8vw, 1.85rem); margin-bottom: var(--space-5);
+  }
+
+  .alumni-detailed { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-5); }
+  .alumni-detailed__name { font-weight: 700; }
+  /* Thesis and Placement share one style; only the thesis title is italicized (via <em>). */
+  .alumni-detailed__line { color: var(--c-muted-text); font-size: 0.95rem; margin-top: var(--space-1); }
+  .alumni-detailed__line .lbl { color: var(--c-muted-text); font-weight: 600; }
+
+  /* Multi-column flow (not grid): names run top-to-bottom down each column,
+     so the alphabetical order reads correctly down the columns. */
+  .alumni-names {
+    list-style: none; margin: 0; padding: 0;
+    columns: 12rem 3; column-gap: var(--space-5);
+  }
+  .alumni-names li {
+    break-inside: avoid;
+    padding-left: var(--space-4); position: relative; color: var(--c-text);
+    margin-bottom: var(--space-2);
+  }
+  .alumni-names li::before {
+    content: ''; position: absolute; left: 0; top: 0.7em; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--c-brand-accent);
+  }
+</style>

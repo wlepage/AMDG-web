@@ -1,0 +1,97 @@
+---
+import Section from './Section.astro';
+import { PROJECTS, FUNDERS } from '@lib/content';
+
+// Map the funding agency named in a project's sponsor string to a logo file.
+// Drop a logo (SVG preferred, else transparent PNG) at the path below and it
+// appears automatically; until then the pill is just text (broken images are
+// hidden via onerror, so the layout never breaks).
+const AGENCY_LOGOS: { test: RegExp; logo: string }[] = [
+  { test: /\bNSF\b/, logo: '/images/partners/nsf.svg' },
+  { test: /\bNASA\b/, logo: '/images/partners/nasa.svg' },
+  { test: /\bAFOSR\b/, logo: '/images/partners/afosr.svg' },
+  { test: /\bONR\b/, logo: '/images/partners/onr.svg' },
+  { test: /\bERDC\b/, logo: '/images/partners/erdc.svg' },
+];
+const sponsorLogo = (s = '') => AGENCY_LOGOS.find((a) => a.test.test(s))?.logo ?? '';
+---
+<Section id="projects" heading="Projects">
+  <ul class="projects">
+    {PROJECTS.map((p) => {
+      const logo = sponsorLogo(p.sponsor);
+      return (
+        <li class="project card">
+          {p.sponsor && (
+            <div class="project__funders">
+              <span class="project__sponsor">
+                {logo && (
+                  <img class="project__sponsor-logo" src={logo} alt="" loading="lazy" decoding="async" onerror="this.remove()" />
+                )}
+                <span>{p.sponsor}</span>
+              </span>
+            </div>
+          )}
+          <h3 class="project__title">{p.title}</h3>
+          {p.description && <p class="project__desc">{p.description}</p>}
+          {p.collaborators && p.collaborators.length > 0 && (
+            <div class="project__collab">
+              <span class="project__collab-label">Collaborators</span>
+              <ul>
+                {p.collaborators.map((c) => <li>{c}</li>)}
+              </ul>
+            </div>
+          )}
+        </li>
+      );
+    })}
+  </ul>
+
+  {FUNDERS?.image && (
+    <div class="funders">
+      <h3 class="funders__heading">{FUNDERS.heading}</h3>
+      <img src={FUNDERS.image} alt={FUNDERS.alt} loading="lazy" decoding="async" />
+    </div>
+  )}
+</Section>
+
+<style>
+  .projects {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  .project { display: flex; flex-direction: column; gap: var(--space-3); }
+
+  /* Row at the top of each card; holds one or more funder chips. */
+  .project__funders { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .project__sponsor {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--c-brand-primary); background: var(--c-surface);
+    border: 1px solid var(--c-border); border-radius: 999px;
+    padding: 4px var(--space-3);
+  }
+  .project__sponsor-logo { height: 16px; width: auto; object-fit: contain; }
+
+  .project__title { font-size: 1.15rem; line-height: 1.3; }
+  .project__desc { color: var(--c-muted-text); }
+  .project__collab { margin-top: auto; }
+  .project__collab-label {
+    display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 600; color: var(--c-muted-text); margin-bottom: var(--space-1);
+  }
+  .project__collab ul { list-style: none; margin: 0; padding: 0; }
+  .project__collab li { font-size: 0.95rem; color: var(--c-text); }
+
+  .funders { margin-top: var(--space-8); text-align: center; }
+  .funders__heading {
+    font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--c-muted-text); font-family: var(--font-sans); font-weight: 600;
+    margin-bottom: var(--space-5);
+  }
+  .funders img {
+    margin-inline: auto; max-width: 480px; width: 100%; height: auto;
+    border-radius: var(--radius); border: 1px solid var(--c-border);
+    background: var(--c-background); padding: var(--space-4);
+  }
+</style>

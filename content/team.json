@@ -1,0 +1,83 @@
+{
+  "_comment": "Team, grouped. Each person needs only a name; every other field is optional and the card degrades gracefully. To add a photo, drop a square-ish image at public/images/team/<name>.jpg and set 'photo' to '/images/team/<name>.jpg'. Undergraduate photos were not reliably recoverable from the old site, so they fall back to a monogram avatar until added.",
+  "groups": [
+    {
+      "title": "Principal Investigator",
+      "members": [
+        {
+          "name": "William LePage, Ph.D.",
+          "role": "Assistant Professor, Mechanical Engineering",
+          "photo": "/images/team/lepage.jpg",
+          "email": "lepage@utulsa.edu",
+          "education": [
+            "Ph.D., University of Michigan",
+            "M.S.E., University of Michigan",
+            "B.S., University of Tulsa"
+          ],
+          "links": [
+            { "label": "Google Scholar", "href": "https://scholar.google.com/citations?user=ACk2g1gAAAAJ" },
+            { "label": "ORCID", "href": "https://orcid.org/0000-0002-6811-3162" }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Graduate Students",
+      "members": [
+        {
+          "name": "Jose Martin del Campo",
+          "education": ["B.S., Mechanical Engineering, LeTourneau University"],
+          "coAdvisor": "Co-advised by Dr. Michael Keller"
+        },
+        {
+          "name": "Michael Lester",
+          "photo": "/images/team/lester.jpg",
+          "education": [
+            "B.S., Mechanical Engineering, The University of Tulsa",
+            "M.S., Mechanical Engineering, The University of Tulsa"
+          ]
+        },
+        {
+          "name": "Musamma Akhtar",
+          "photo": "/images/team/akhtar.jpg",
+          "education": [
+            "B.S., Mechanical Engineering, The University of Tulsa",
+            "M.S., Biomedical Engineering, Colorado State University"
+          ],
+          "coAdvisor": "Co-advised by Dr. Steven Tipton"
+        },
+        {
+          "name": "Nathan Rendon",
+          "photo": "/images/team/rendon.jpg",
+          "education": ["B.S., Mechanical Engineering, The University of Tulsa"]
+        },
+        {
+          "name": "Ramona Naghi",
+          "photo": "/images/team/naghi.jpg",
+          "education": ["B.S., Mechanical Engineering, The University of Tulsa"],
+          "coAdvisor": "Co-advised by Dr. Michael Keller"
+        },
+        {
+          "name": "Reuben Kabantiyok",
+          "photo": "/images/team/kabantiyok.jpg",
+          "education": [
+            "BEng., Metallurgical Engineering, Ahmadu Bello University, Zaria, Nigeria",
+            "MSc., Nanoscience and Nanotechnology, University of Glasgow, Scotland, United Kingdom"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Undergraduate Students",
+      "members": [
+        { "name": "Alex Dininni" },
+        { "name": "Emily Smith" },
+        { "name": "Jaime Marshall" },
+        { "name": "Kalainey Nickel" },
+        { "name": "Owen Schwerdtfeger" },
+        { "name": "Robinson Ford" },
+        { "name": "Tanner Cross" }
+      ]
+    }
+  ]
+}
