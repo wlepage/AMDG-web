@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:www.amdg.science)"
+      "WebFetch(domain:www.amdg.science)",
+      "Bash(npx astro *)",
+      "Bash(git add *)",
+      "Bash(git commit -q -m 'Remove Contact section entirely *)",
+      "Bash(git fetch *)",
+      "Bash(git rebase *)",
+      "Bash(git push *)"
     ]
   }
 }

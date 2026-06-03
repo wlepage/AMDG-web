@@ -8,7 +8,6 @@ import highlights from '@content/highlights.json';
 import projects from '@content/projects.json';
 import team from '@content/team.json';
 import alumni from '@content/alumni.json';
-import contact from '@content/contact.json';
 
 export interface NavItem { id: string; label: string; }
 export interface Site {
@@ -56,12 +55,6 @@ export interface AlumniGroup {
   members: (AlumniMember | string)[];
 }
 
-export interface ContactBlock { label: string; lines: string[] }
-export interface Contact {
-  intro: string; lab: ContactBlock; office: ContactBlock; email: string;
-  mapLink?: { label: string; href: string };
-}
-
 export const SITE = site as Site;
 export const THEME = theme as unknown as Theme;
 export const HERO = hero as unknown as Hero;
@@ -70,7 +63,6 @@ export const PROJECTS = (projects.items as Project[]);
 export const FUNDERS = (projects.funders as Funders);
 export const TEAM = (team.groups as unknown as TeamGroup[]);
 export const ALUMNI = (alumni.groups as unknown as AlumniGroup[]);
-export const CONTACT = contact as unknown as Contact;
 
 // Highlights are always returned newest-first regardless of source order.
 export const HIGHLIGHTS: Highlight[] = [...(highlights.items as Highlight[])].sort(
