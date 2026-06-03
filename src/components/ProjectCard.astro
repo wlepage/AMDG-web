@@ -1,0 +1,124 @@
+---
+import type { Project } from '@lib/content';
+
+// Map the funding agency named in a project's sponsor string to a logo file.
+// Drop a logo (SVG preferred, else transparent PNG) at the path below and it
+// appears automatically; until then the badge is just text (broken images are
+// hidden via onerror, so the layout never breaks).
+const AGENCY_LOGOS: { test: RegExp; logo: string }[] = [
+  { test: /\bNSF\b/, logo: '/images/partners/nsf.svg' },
+  { test: /\bNASA\b/, logo: '/images/partners/nasa.svg' },
+  { test: /\bAFOSR\b/, logo: '/images/partners/afosr.jpeg' },
+  { test: /\bONR\b/, logo: '/images/partners/onr.png' },
+  { test: /\b(?:DOE|Department of Energy)\b/, logo: '/images/partners/doe.svg' },
+  { test: /\bERDC\b/, logo: '/images/partners/erdc.jpg' },
+];
+const sponsorLogo = (s = '') => AGENCY_LOGOS.find((a) => a.test.test(s))?.logo ?? '';
+
+// Map a collaborator's institution to a small bullet icon. The institution is
+// the first token inside the parentheses of a collaborator string, e.g.
+// "Jerard Gordon (Umich, PI)" -> "umich". Drop a transparent SVG at the path
+// below and it appears as a bullet next to that name; missing files are hidden
+// via onerror, so a name with no matching logo just renders as plain text.
+const INSTITUTION_LOGOS: Record<string, string> = {
+  utulsa: '/images/institutions/utulsa.svg',
+  'u tulsa': '/images/institutions/utulsa.svg',
+  'university of tulsa': '/images/institutions/utulsa.svg',
+  umich: '/images/institutions/umich.svg',
+  'u mich': '/images/institutions/umich.svg',
+  'university of michigan': '/images/institutions/umich.svg',
+  alabama: '/images/institutions/alabama.png',
+  'u alabama': '/images/institutions/alabama.png',
+  'u of alabama': '/images/institutions/alabama.png',
+  'university of alabama': '/images/institutions/alabama.png',
+  northwestern: '/images/institutions/northwestern.svg',
+  'northwestern u': '/images/institutions/northwestern.svg',
+  'northwestern university': '/images/institutions/northwestern.svg',
+  purdue: '/images/institutions/purdue.svg',
+  'purdue u': '/images/institutions/purdue.svg',
+  'purdue university': '/images/institutions/purdue.svg',
+};
+const collabLogo = (c = '') => {
+  const token = c.match(/\(([^,)]+)/)?.[1]?.trim().toLowerCase() ?? '';
+  return INSTITUTION_LOGOS[token] ?? '';
+};
+
+interface Props { project: Project; }
+const { project: p } = Astro.props;
+const logo = sponsorLogo(p.sponsor);
+---
+<li class="project card">
+  {p.sponsor && (
+    <div class="project__funders">
+      <span class="project__sponsor">
+        {logo && (
+          <img class="project__sponsor-logo" src={logo} alt="" loading="lazy" decoding="async" onerror="this.remove()" />
+        )}
+        <span>{p.sponsor}</span>
+      </span>
+    </div>
+  )}
+  <h3 class="project__title">{p.title}</h3>
+  {p.description && <p class="project__desc">{p.description}</p>}
+  {p.collaborators && p.collaborators.length > 0 && (
+    <div class="project__collab">
+      <span class="project__collab-label">Collaborators</span>
+      <ul>
+        {p.collaborators.map((c) => {
+          const ilogo = collabLogo(c);
+          return (
+            <li>
+              {ilogo && (
+                <img class="project__collab-icon" src={ilogo} alt="" loading="lazy" decoding="async" onerror="this.remove()" />
+              )}
+              <span>{c}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  )}
+</li>
+
+<style>
+  .project { display: flex; flex-direction: column; gap: var(--space-3); }
+
+  /* Row at the top of each card; holds one or more funder chips. */
+  .project__funders { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  /* Single sponsor badge: one white rounded container holding the logo + the
+     agency name. The logo has no frame of its own — this badge is the only
+     container (no more pill-in-pill-in-card nesting). */
+  .project__sponsor {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--c-brand-primary); background: #fff;
+    border: 1px solid var(--c-border); border-radius: 8px;
+    padding: 3px 10px 3px 6px;
+  }
+  /* Sponsor logo: floats to 30px tall, width follows aspect ratio (ONR stays
+     wide). No chip of its own — the badge supplies the white background. */
+  .project__sponsor-logo { flex: none; height: 30px; width: auto; object-fit: contain; }
+  /* Collaborators: each institution mark sits in a uniform 30x30 white chip so
+     they all align regardless of source aspect ratio / transparency. */
+  .project__collab-icon {
+    flex: none; box-sizing: border-box;
+    width: 30px; height: 30px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 4px;
+    padding: 2px;
+  }
+
+  .project__title { font-size: 1.15rem; line-height: 1.3; }
+  .project__desc { color: var(--c-muted-text); }
+  .project__collab { margin-top: auto; }
+  .project__collab-label {
+    display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 600; color: var(--c-muted-text); margin-bottom: var(--space-1);
+  }
+  .project__collab ul { list-style: none; margin: 0; padding: 0; }
+  .project__collab li {
+    display: flex; align-items: center; gap: var(--space-2);
+    font-size: 0.95rem; color: var(--c-text);
+  }
+</style>

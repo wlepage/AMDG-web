@@ -1,6 +1,18 @@
 {
-  "_comment": "Research projects. Cards show title, sponsor, collaborators, and (if present) a description. No outbound links by design — add a 'description' string to any project to populate the card body.",
+  "_comment": "Research projects. Cards show title, sponsor, collaborators, and (if present) a description. No outbound links by design — add a 'description' string to any project to populate the card body. Set \"earlier\": true on an item to move it into the collapsed 'Completed projects' disclosure below the main grid.",
   "items": [
+    {
+      "title": "Coated Powders for Cold Spray",
+      "sponsor": "ONR",
+      "collaborators": ["Christopher Schuh (Northwestern)", "Luke Brewer (Alabama)"],
+      "description": ""
+    },
+    {
+      "title": "Utilization of Existing Pipelines in Hydrogen Transport",
+      "sponsor": "DOE",
+      "collaborators": ["Cem Sarica (UTulsa, PI)", "Eduardo Pereyra (UTulsa)", "Michael Keller (UTulsa)"],
+      "description": ""
+    },
     {
       "title": "Capacity Building to Enhance the Understanding of Process, Structure, and Property Relationships of Ultra-High Temperature Materials for Extreme Environments",
       "sponsor": "AFOSR",
@@ -17,7 +29,15 @@
       "title": "BIG: Building Intelligent Gradients in additively manufactured space engine materials via a multiscale predictive framework",
       "sponsor": "NASA ESI",
       "collaborators": ["Jerard Gordon (Umich, PI)", "Wenda Tan (Umich)"],
-      "description": ""
+      "description": "",
+      "earlier": true
+    },
+    {
+      "title": "Surface smoothing by a transient liquid phase for increased fatigue life",
+      "sponsor": "ONR",
+      "collaborators": ["Michael Sangid (Purdue)"],
+      "description": "",
+      "earlier": true
     },
     {
       "title": "MRI: Acquisition of Compact Mechanical Testing System for Structural, Archaeological, and High-Temperature Materials",

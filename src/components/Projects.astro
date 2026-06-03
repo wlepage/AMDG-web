@@ -1,74 +1,31 @@
 ---
 import Section from './Section.astro';
+import ProjectCard from './ProjectCard.astro';
 import { PROJECTS, FUNDERS } from '@lib/content';
 
-// Map the funding agency named in a project's sponsor string to a logo file.
-// Drop a logo (SVG preferred, else transparent PNG) at the path below and it
-// appears automatically; until then the pill is just text (broken images are
-// hidden via onerror, so the layout never breaks).
-const AGENCY_LOGOS: { test: RegExp; logo: string }[] = [
-  { test: /\bNSF\b/, logo: '/images/partners/nsf.svg' },
-  { test: /\bNASA\b/, logo: '/images/partners/nasa.svg' },
-  { test: /\bAFOSR\b/, logo: '/images/partners/afosr.svg' },
-  { test: /\bONR\b/, logo: '/images/partners/onr.svg' },
-  { test: /\bERDC\b/, logo: '/images/partners/erdc.svg' },
-];
-const sponsorLogo = (s = '') => AGENCY_LOGOS.find((a) => a.test.test(s))?.logo ?? '';
-
-// Map a collaborator's institution to a small bullet icon. The institution is
-// the first token inside the parentheses of a collaborator string, e.g.
-// "Jerard Gordon (Umich, PI)" -> "umich". Drop a transparent SVG at the path
-// below and it appears as a bullet next to that name; missing files are hidden
-// via onerror, so a name with no matching logo just renders as plain text.
-const INSTITUTION_LOGOS: Record<string, string> = {
-  utulsa: '/images/institutions/utulsa.svg',
-  umich: '/images/institutions/umich.svg',
-};
-const collabLogo = (c = '') => {
-  const token = c.match(/\(([^,)]+)/)?.[1]?.trim().toLowerCase() ?? '';
-  return INSTITUTION_LOGOS[token] ?? '';
-};
+// Current projects show in the main grid; any flagged `"earlier": true` collapse
+// into the "Completed projects" disclosure below (mirrors the Highlights fold).
+const current = PROJECTS.filter((p) => !p.earlier);
+const earlier = PROJECTS.filter((p) => p.earlier);
 ---
-<Section id="projects" heading="Projects">
+<Section id="projects" heading="Active Projects">
   <ul class="projects">
-    {PROJECTS.map((p) => {
-      const logo = sponsorLogo(p.sponsor);
-      return (
-        <li class="project card">
-          {p.sponsor && (
-            <div class="project__funders">
-              <span class="project__sponsor">
-                {logo && (
-                  <img class="project__sponsor-logo" src={logo} alt="" loading="lazy" decoding="async" onerror="this.remove()" />
-                )}
-                <span>{p.sponsor}</span>
-              </span>
-            </div>
-          )}
-          <h3 class="project__title">{p.title}</h3>
-          {p.description && <p class="project__desc">{p.description}</p>}
-          {p.collaborators && p.collaborators.length > 0 && (
-            <div class="project__collab">
-              <span class="project__collab-label">Collaborators</span>
-              <ul>
-                {p.collaborators.map((c) => {
-                  const ilogo = collabLogo(c);
-                  return (
-                    <li>
-                      {ilogo && (
-                        <img class="project__collab-icon" src={ilogo} alt="" loading="lazy" decoding="async" onerror="this.remove()" />
-                      )}
-                      <span>{c}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          )}
-        </li>
-      );
-    })}
+    {current.map((p) => <ProjectCard project={p} />)}
   </ul>
+
+  {earlier.length > 0 && (
+    <details class="year-fold">
+      <summary class="year-fold__summary">
+        <span class="year-fold__year">Completed Projects</span>
+        <svg class="year-fold__chevron" viewBox="0 0 20 20" aria-hidden="true" width="20" height="20">
+          <path d="M5 7.5 L10 12.5 L15 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </summary>
+      <ul class="projects year-fold__list">
+        {earlier.map((p) => <ProjectCard project={p} />)}
+      </ul>
+    </details>
+  )}
 
   {FUNDERS?.image && (
     <div class="funders">
@@ -84,35 +41,26 @@ const collabLogo = (c = '') => {
     display: grid; gap: var(--space-5);
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
-  .project { display: flex; flex-direction: column; gap: var(--space-3); }
 
-  /* Row at the top of each card; holds one or more funder chips. */
-  .project__funders { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-  .project__sponsor {
-    display: inline-flex; align-items: center; gap: var(--space-2);
-    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--c-brand-primary); background: var(--c-surface);
-    border: 1px solid var(--c-border); border-radius: 999px;
-    padding: 4px var(--space-3);
+  /* ---- Completed projects: a single line-divided disclosure (matches Highlights) ---- */
+  .year-fold {
+    margin-top: var(--space-7);
+    border-top: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border);
   }
-  .project__sponsor-logo { height: 16px; width: auto; object-fit: contain; }
-
-  .project__title { font-size: 1.15rem; line-height: 1.3; }
-  .project__desc { color: var(--c-muted-text); }
-  .project__collab { margin-top: auto; }
-  .project__collab-label {
-    display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
-    font-weight: 600; color: var(--c-muted-text); margin-bottom: var(--space-1);
+  .year-fold[open] { border-bottom: 0; }
+  .year-fold__summary {
+    display: flex; align-items: center; gap: var(--space-3);
+    cursor: pointer; list-style: none;
+    padding: var(--space-4) 0;
+    font-family: var(--font-serif); font-weight: 700; font-size: 1.15rem; color: var(--c-text);
   }
-  .project__collab ul { list-style: none; margin: 0; padding: 0; }
-  .project__collab li {
-    display: flex; align-items: center; gap: var(--space-2);
-    font-size: 0.95rem; color: var(--c-text);
-  }
-  .project__collab-icon {
-    height: 1.15em; width: auto; max-width: 1.6em;
-    object-fit: contain; flex: none;
-  }
+  .year-fold__summary::-webkit-details-marker { display: none; }
+  .year-fold__year { flex: 1; }
+  .year-fold__summary:hover .year-fold__year { color: var(--c-brand-primary); }
+  .year-fold__chevron { color: var(--c-muted-text); transition: transform 0.2s ease; flex: 0 0 auto; }
+  .year-fold[open] .year-fold__chevron { transform: rotate(180deg); }
+  .year-fold__list { padding: var(--space-2) 0 var(--space-5); }
 
   .funders { margin-top: var(--space-8); text-align: center; }
   .funders__heading {

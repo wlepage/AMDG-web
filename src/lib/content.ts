@@ -39,7 +39,7 @@ export interface About {
 }
 
 export interface Highlight { date: string; displayDate: string; tags?: string[]; text: string; link?: string; }
-export interface Project { title: string; sponsor?: string; collaborators?: string[]; description?: string; }
+export interface Project { title: string; sponsor?: string; collaborators?: string[]; description?: string; earlier?: boolean; }
 export interface Funders { image: string; alt: string; heading: string; }
 
 export interface PersonLink { label: string; href: string; }
