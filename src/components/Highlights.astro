@@ -29,7 +29,7 @@ const older = HIGHLIGHTS.slice(5);
           <p class="timeline__text" set:html={h.text}></p>
           {h.link && (
             <p class="timeline__doi">
-              <a href={h.link} rel="noopener noreferrer">{h.link.replace(/^https?:\/\//, '')}</a>
+              <a href={h.link} target="_blank" rel="noopener noreferrer">{h.link.replace(/^https?:\/\//, '')}</a>
             </p>
           )}
           {h.tags && h.tags.length > 0 && (
@@ -60,7 +60,7 @@ const older = HIGHLIGHTS.slice(5);
               <p class="timeline__text" set:html={h.text}></p>
               {h.link && (
                 <p class="timeline__doi">
-                  <a href={h.link} rel="noopener noreferrer">{h.link.replace(/^https?:\/\//, '')}</a>
+                  <a href={h.link} target="_blank" rel="noopener noreferrer">{h.link.replace(/^https?:\/\//, '')}</a>
                 </p>
               )}
               {h.tags && h.tags.length > 0 && (

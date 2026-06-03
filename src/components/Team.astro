@@ -74,7 +74,7 @@ const rank = (s: string) => DEGREE_RANK[degreeLevel(s) ?? ''] ?? 0;
                     <li><a href={`mailto:${person.email}`}>Email</a></li>
                   )}
                   {person.links?.map((l) => (
-                    <li><a href={l.href} rel="noopener noreferrer">{l.label}</a></li>
+                    <li><a href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a></li>
                   ))}
                 </ul>
               )}
