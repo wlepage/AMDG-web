@@ -54,7 +54,10 @@
         {
           "name": "Ramona Naghi",
           "photo": "/images/team/naghi.jpg",
-          "education": ["B.S., Mechanical Engineering, The University of Tulsa"],
+          "education": [
+            "B.S., Mechanical Engineering, The University of Tulsa",
+            "M.S.E., Mechanical Engineering, The University of Tulsa"
+          ],
           "coAdvisor": "Co-advised by Dr. Michael Keller"
         },
         {

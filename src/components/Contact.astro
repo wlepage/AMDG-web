@@ -3,47 +3,14 @@ import Section from './Section.astro';
 import { CONTACT } from '@lib/content';
 ---
 <Section id="contact" heading="Contact" tint={true}>
-  <div class="contact">
-    <div class="contact__grid">
-      <div class="contact__block">
-        <h3 class="contact__label">{CONTACT.lab.label}</h3>
-        <address class="contact__address">
-          {CONTACT.lab.lines.map((line) => <span>{line}</span>)}
-        </address>
-      </div>
-
-      <div class="contact__block">
-        <h3 class="contact__label">{CONTACT.office.label}</h3>
-        <address class="contact__address">
-          {CONTACT.office.lines.map((line) => <span>{line}</span>)}
-        </address>
-      </div>
-
-      <div class="contact__block">
-        <h3 class="contact__label">Email</h3>
-        <p><a class="contact__email" href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></p>
-        {CONTACT.mapLink && (
-          <p class="contact__map">
-            <a href={CONTACT.mapLink.href} rel="noopener noreferrer">{CONTACT.mapLink.label}</a>
-          </p>
-        )}
-      </div>
-    </div>
-  </div>
+  <address class="contact__address">
+    {CONTACT.lab.lines.map((line) => <span>{line}</span>)}
+  </address>
 </Section>
 
 <style>
-  .contact__grid {
-    display: grid; gap: var(--space-5);
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  .contact__address {
+    font-style: normal; display: grid; gap: 2px;
+    color: var(--c-text); font-size: 1.05rem;
   }
-  .contact__block { background: var(--c-background); border: 1px solid var(--c-border); border-radius: var(--radius); padding: var(--space-5); }
-  .contact__label {
-    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;
-    font-family: var(--font-sans); font-weight: 600; color: var(--c-accent-strong);
-    margin-bottom: var(--space-3);
-  }
-  .contact__address { font-style: normal; display: grid; gap: 2px; color: var(--c-text); }
-  .contact__email { font-weight: 600; }
-  .contact__map { margin-top: var(--space-3); font-size: 0.95rem; }
 </style>

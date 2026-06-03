@@ -6,19 +6,16 @@
 
 /* ---- Self-hosted fonts ---- */
 @font-face {
-  font-family: 'Old Standard TT';
-  font-style: normal; font-weight: 400; font-display: swap;
-  src: url('/fonts/oldstandard-400.woff2') format('woff2');
+  font-family: 'DM Serif Display';
+  /* Single-master display face; the 400–700 range covers our 700 headings
+     so the browser uses the real glyphs instead of synthesizing bold. */
+  font-style: normal; font-weight: 400 700; font-display: swap;
+  src: url('/fonts/dmserif-400.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Old Standard TT';
-  font-style: italic; font-weight: 400; font-display: swap;
-  src: url('/fonts/oldstandard-400i.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Old Standard TT';
-  font-style: normal; font-weight: 700; font-display: swap;
-  src: url('/fonts/oldstandard-700.woff2') format('woff2');
+  font-family: 'DM Serif Display';
+  font-style: italic; font-weight: 400 700; font-display: swap;
+  src: url('/fonts/dmserif-400i.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Inter var';
@@ -28,7 +25,7 @@
 
 /* ---- Design tokens ---- */
 :root {
-  --font-serif: 'Old Standard TT', Georgia, 'Times New Roman', serif;
+  --font-serif: 'DM Serif Display', Georgia, 'Times New Roman', serif;
   --font-sans: 'Inter var', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
   --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
