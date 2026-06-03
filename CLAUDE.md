@@ -94,7 +94,6 @@ edit. Structural/CSS work does not need this, but anything that adds/changes the
 no horizontal rule.
 
 ## Open follow-ups
-- `highlights.json` H2 (*ACS Applied Engineering Materials*) has **no DOI link** yet.
 - Undergrad students need years/majors.
 - Agency/partner logo SVGs not yet added (`public/images/partners/`).
 - `Jose Martin del Campo` (grad) has no photo (`public/images/team/`).
