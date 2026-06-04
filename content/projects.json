@@ -33,7 +33,7 @@
       "earlier": true
     },
     {
-      "title": "Surface smoothing by a transient liquid phase for increased fatigue life",
+      "title": "A New Surface Engineering Approach for Fatigue-Resistant AM Microlattices",
       "sponsor": "ONR",
       "collaborators": ["Michael Sangid (Purdue)"],
       "description": "",
@@ -49,6 +49,26 @@
         "Hema Ramsurn (UTulsa)"
       ],
       "description": ""
+    },
+    {
+      "title": "VR for Smart Installation Experimentation and Security Analysis",
+      "sponsor": "ERDC",
+      "collaborators": [
+        "PI: John Hale (UTulsa)",
+        "Co-PIs: Sal Aurigemma, Peter Hawrylak, Mauricio Papa, Rose Gamble, Akram Taghavi-Burris, Tyler Moore, Roger Mailler, Ian Riley (UTulsa)"
+      ],
+      "description": "",
+      "earlier": true
+    },
+    {
+      "title": "Adaptive OT Threat Analysis Technology",
+      "sponsor": "ERDC",
+      "collaborators": [
+        "PI: Mauricio Papa (UTulsa)",
+        "Co-PIs: Peter Hawrylak, Rose Gamble, Tyler Moore, John Hale, Cem Sarica, Roger Mailler (UTulsa)"
+      ],
+      "description": "",
+      "earlier": true
     }
   ],
   "funders": {
