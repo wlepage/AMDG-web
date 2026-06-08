@@ -7,7 +7,14 @@
       "Bash(git commit -q -m 'Remove Contact section entirely *)",
       "Bash(git fetch *)",
       "Bash(git rebase *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git ls-files *)",
+      "Bash(git check-ignore *)",
+      "Bash(npm run *)",
+      "Bash(git commit -m 'Add Active/Completed Projects split, project logos, and ProjectCard' -m '- New projects: ONR Coated Powders \\(Northwestern/Alabama\\), DOE Hydrogen Pipelines \\(3x UTulsa\\); BIG \\(NASA\\) and the ONR Sangid/Purdue project move into a collapsed '\\\\''Completed Projects'\\\\'' fold via a new \"earlier\" flag. *)",
+      "Bash(git commit *)",
+      "Bash(git diff *)",
+      "Bash(git restore *)"
     ]
   }
 }
