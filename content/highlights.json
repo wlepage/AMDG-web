@@ -2,6 +2,24 @@
   "_comment": "Brief Updates / Highlights, newest first. 'date' is ISO (first of month) used for sorting; 'displayDate' preserves the label as originally written. Add new entries anywhere — the component re-sorts by date, newest first.",
   "items": [
     {
+      "date": "2026-07-14",
+      "displayDate": "July 2026",
+      "tags": ["publication"],
+      "text": "In collaboration with the Keller and Ramsurn groups, our paper on the effects of filler size on the curing mechanism of an allyl-functionalized preceramic polymer was accepted for publication in <em>Journal of Thermal Analysis and Calorimetry</em>."
+    },
+    {
+      "date": "2026-07-10",
+      "displayDate": "July 2026",
+      "tags": ["publication"],
+      "text": "Our paper on blue light for improved digital image correlation was accepted for publication in <em>Experimental Mechanics</em>."
+    },
+    {
+      "date": "2026-06-25",
+      "displayDate": "June 2026",
+      "tags": ["publication"],
+      "text": "In collaboration with several teams around the world, our paper on best practices for scanning electron microscope digital image correlation was accepted for publication in <em>Experimental Mechanics</em>."
+    },
+    {
       "date": "2026-04-01",
       "displayDate": "April 2026",
       "tags": ["award"],
