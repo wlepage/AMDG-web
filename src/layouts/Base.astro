@@ -18,6 +18,21 @@ const themeVars = themeCssVars();
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- GitHub Pages serves no custom HTTP headers, so CSP can only be set here
+         via meta (no report-only mode, no frame-ancestors enforcement this way).
+         style-src and script-src both need 'unsafe-inline': Astro inlines this
+         single-page site's per-component scripts and the theme-vars
+         <style set:html> block directly into the HTML rather than emitting
+         external files, so there's no nonce/hash to pin them to. That means
+         this CSP does not stop inline-script XSS on its own — its real value
+         here is default-src/object-src/base-uri/form-action/frame-src, which
+         still block rogue iframes, base-tag hijacking, form-based exfiltration,
+         and loading subresources from anywhere but this origin. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; base-uri 'self'; form-action 'none'; object-src 'none'"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDesc} />
     <link rel="canonical" href={canonical} />

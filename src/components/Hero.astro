@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { SITE, HERO } from '@lib/content';
+import { resolveImage } from '@lib/images';
 
 const { mode, eyebrow, autoAdvanceMs, slides, video } = HERO;
 
@@ -71,14 +73,28 @@ const canAutoAdvance = stage === 'carousel' && n > 1 && autoAdvanceMs > 0;
                   data-slide
                   aria-hidden={i === 0 ? 'false' : 'true'}
                 >
-                  <img
-                    src={slide.src}
-                    alt={slide.alt}
-                    width="1600"
-                    height="900"
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                    decoding="async"
-                  />
+                  {(() => {
+                    const optimized = resolveImage(slide.src);
+                    return optimized ? (
+                      <Image
+                        src={optimized}
+                        alt={slide.alt}
+                        widths={[480, 800, 1200, 1600]}
+                        sizes="(min-width: 920px) 55vw, 100vw"
+                        loading={i === 0 ? 'eager' : 'lazy'}
+                        decoding="async"
+                      />
+                    ) : (
+                      <img
+                        src={slide.src}
+                        alt={slide.alt}
+                        width="1600"
+                        height="900"
+                        loading={i === 0 ? 'eager' : 'lazy'}
+                        decoding="async"
+                      />
+                    );
+                  })()}
                 </div>
               ))}
             </div>

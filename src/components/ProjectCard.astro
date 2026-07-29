@@ -1,10 +1,12 @@
 ---
+import { Image } from 'astro:assets';
 import type { Project } from '@lib/content';
+import { resolveImage } from '@lib/images';
 
 // Map the funding agency named in a project's sponsor string to a logo file.
 // Drop a logo (SVG preferred, else transparent PNG) at the path below and it
 // appears automatically; until then the badge is just text (broken images are
-// hidden via onerror, so the layout never breaks).
+// hidden via the data-hide-on-error listener below, so the layout never breaks).
 const AGENCY_LOGOS: { test: RegExp; logo: string }[] = [
   { test: /\bNSF\b/, logo: '/images/partners/nsf.svg' },
   { test: /\bNASA\b/, logo: '/images/partners/nasa.svg' },
@@ -46,13 +48,18 @@ const collabLogo = (c = '') => {
 interface Props { project: Project; }
 const { project: p } = Astro.props;
 const logo = sponsorLogo(p.sponsor);
+const optimizedLogo = logo ? resolveImage(logo) : undefined;
 ---
 <li class="project card">
   {p.sponsor && (
     <div class="project__funders">
       <span class="project__sponsor">
         {logo && (
-          <img class="project__sponsor-logo" src={logo} alt="" loading="lazy" decoding="async" onerror="this.remove()" />
+          optimizedLogo ? (
+            <Image class="project__sponsor-logo" src={optimizedLogo} alt="" width={90} loading="lazy" decoding="async" />
+          ) : (
+            <img class="project__sponsor-logo" src={logo} alt="" loading="lazy" decoding="async" data-hide-on-error />
+          )
         )}
         <span>{p.sponsor}</span>
       </span>
@@ -66,10 +73,15 @@ const logo = sponsorLogo(p.sponsor);
       <ul>
         {p.collaborators.map((c) => {
           const ilogo = collabLogo(c);
+          const optimizedIlogo = ilogo ? resolveImage(ilogo) : undefined;
           return (
             <li>
               {ilogo && (
-                <img class="project__collab-icon" src={ilogo} alt="" loading="lazy" decoding="async" onerror="this.remove()" />
+                optimizedIlogo ? (
+                  <Image class="project__collab-icon" src={optimizedIlogo} alt="" width={30} height={30} loading="lazy" decoding="async" />
+                ) : (
+                  <img class="project__collab-icon" src={ilogo} alt="" loading="lazy" decoding="async" data-hide-on-error />
+                )
               )}
               <span>{c}</span>
             </li>
@@ -128,3 +140,20 @@ const logo = sponsorLogo(p.sponsor);
     font-size: 0.95rem; color: var(--c-text);
   }
 </style>
+
+<script>
+  // Hides a logo <img> if it 404s, instead of an inline onerror= attribute —
+  // kept out-of-line so a strict script-src CSP (no 'unsafe-inline') still works.
+  // 'error' doesn't bubble on <img>, so this listens in the capture phase.
+  document.addEventListener(
+    'error',
+    (event) => {
+      const target = event.target;
+      if (target instanceof HTMLImageElement && target.hasAttribute('data-hide-on-error')) {
+        target.remove();
+      }
+    },
+    true
+  );
+</script>
+

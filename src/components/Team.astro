@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import Section from './Section.astro';
 import { TEAM, initials } from '@lib/content';
+import { resolveImage } from '@lib/images';
 
 // Classify a free-text degree line so we can show the right mortarboard.
 type Level = 'phd' | 'ms' | 'bs' | null;
@@ -31,7 +33,9 @@ const rank = (s: string) => DEGREE_RANK[degreeLevel(s) ?? ''] ?? 0;
           return (
           <li class="person card">
             <div class="person__avatar">
-              {person.photo ? (
+              {person.photo && resolveImage(person.photo) ? (
+                <Image src={resolveImage(person.photo)!} alt={`Portrait of ${person.name}`} width={224} height={224} loading="lazy" decoding="async" />
+              ) : person.photo ? (
                 <img src={person.photo} alt={`Portrait of ${person.name}`} width="160" height="160" loading="lazy" decoding="async" />
               ) : (
                 <span class="person__monogram" aria-hidden="true">{initials(person.name)}</span>

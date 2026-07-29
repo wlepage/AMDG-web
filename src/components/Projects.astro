@@ -1,7 +1,11 @@
 ---
+import { Image } from 'astro:assets';
 import Section from './Section.astro';
 import ProjectCard from './ProjectCard.astro';
 import { PROJECTS, FUNDERS } from '@lib/content';
+import { resolveImage } from '@lib/images';
+
+const funderImage = FUNDERS?.image ? resolveImage(FUNDERS.image) : undefined;
 
 // Current projects show in the main grid; any flagged `"earlier": true` collapse
 // into the "Completed projects" disclosure below (mirrors the Highlights fold).
@@ -30,7 +34,11 @@ const earlier = PROJECTS.filter((p) => p.earlier);
   {FUNDERS?.image && (
     <div class="funders">
       <h3 class="funders__heading">{FUNDERS.heading}</h3>
-      <img src={FUNDERS.image} alt={FUNDERS.alt} loading="lazy" decoding="async" />
+      {funderImage ? (
+        <Image src={funderImage} alt={FUNDERS.alt} widths={[480, 960]} sizes="480px" loading="lazy" decoding="async" />
+      ) : (
+        <img src={FUNDERS.image} alt={FUNDERS.alt} loading="lazy" decoding="async" />
+      )}
     </div>
   )}
 </Section>

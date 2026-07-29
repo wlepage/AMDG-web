@@ -113,13 +113,39 @@ no horizontal rule.
   rasterized from the SVG with `sharp` — regenerate it if the SVG changes. Both
   are linked in `Base.astro`.
 
+**Images** (`src/lib/images.ts`) — raster photos that benefit from real
+optimization (resize/webp/`srcset`) live in `src/assets/images/**`, not
+`public/images/**`; content JSON still stores plain `/images/...` string paths
+(content stays data), and `resolveImage()` maps that string to the imported
+module via `import.meta.glob`. Components (`Hero`, `Team`, `Projects`,
+`ProjectCard`) call `resolveImage()` and render `astro:assets`'s `<Image>` when
+it resolves, falling back to a plain `<img>` otherwise — so dropping a new
+photo into `src/assets/images/<folder>/` (matching the JSON path) is enough to
+get it optimized; anything left in `public/images/**` (small SVG/PNG marks) is
+served as-is, untouched by the build. **`Jose Martin del Campo`'s photo, if
+added, should go in `src/assets/images/team/`, not `public/images/team/`.**
+Small vector/institution logos stay in `public/images/{partners,institutions}/`
+— astro:assets doesn't transform SVGs — but oversized ones should still be
+run through `npx svgo --multipass -i <file> -o <file>` (lossless) before
+committing.
+
 ## Open follow-ups
 - Undergrad students need years/majors.
-- `Jose Martin del Campo` (grad) has no photo (`public/images/team/`).
-- Some logos are opaque rasters (AFOSR/ERDC JPEG, Alabama PNG) so they read as
-  filled tiles next to the transparent SVG marks — swap for transparent SVG for a
-  cleaner match.
+- `Jose Martin del Campo` (grad) has no photo (`src/assets/images/team/` — see Images above).
+- AFOSR remains an opaque raster (JPEG) so it reads as a filled tile next to the
+  transparent SVG marks — swap for a transparent SVG for a cleaner match. (ERDC
+  and Alabama were already converted to optimized `<Image>` output, so they no
+  longer carry the same file-size downside even though they're still JPEG/PNG
+  source.)
 - Nav label is still "Projects" while the section heading is "Active Projects".
+- The CSP in `Base.astro` needs `script-src`/`style-src` `'unsafe-inline'`
+  because this single-page build inlines its scripts/styles rather than
+  emitting external files with a nonce/hash target — see
+  `SECURITY_A11Y_PERF_REVIEW.md` for the full tradeoff and a possible
+  hash-based follow-up.
+- `AlumniAccordion.astro` doesn't actually collapse/expand despite its name;
+  `tests/a11y.spec.ts`'s accordion test is stale against the current static-list
+  design. Needs a product decision (see `SECURITY_A11Y_PERF_REVIEW.md`).
 
 ## Deploy (not yet a git repo)
 GitHub Pages via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) on
