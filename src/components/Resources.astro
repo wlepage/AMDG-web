@@ -1,0 +1,87 @@
+---
+import { Image } from 'astro:assets';
+import Section from './Section.astro';
+import ResourceCard from './ResourceCard.astro';
+import { RESOURCE_TOOLS, INSTRUMENT } from '@lib/content';
+import { resolveImage } from '@lib/images';
+
+// The instrument photo is optional, and the figure is gated on the *resolved*
+// image rather than the JSON string: until a real file exists at
+// src/assets/images/resources/ matching that path, the figure is skipped
+// entirely, so the block renders text-only with no gap and no 404 request.
+const instrumentPhoto = INSTRUMENT.photo ? resolveImage(INSTRUMENT.photo) : undefined;
+
+// The one sponsor badge on this page is always NSF (the MRI award), so unlike
+// ProjectCard there is nothing to look up — the path is fixed. It lives in
+// public/, so it never resolves through astro:assets and always takes the
+// plain <img> branch.
+const NSF_LOGO = '/images/partners/nsf.svg';
+---
+<Section id="resources" heading="Community Resources" tint={true}>
+  <article class:list={['instrument', 'card', { 'instrument--photo': instrumentPhoto }]}>
+    {instrumentPhoto && (
+      <figure class="instrument__figure">
+        <Image src={instrumentPhoto} alt={INSTRUMENT.photoAlt ?? ''} widths={[360, 720]} sizes="(max-width: 700px) 100vw, 360px" loading="lazy" decoding="async" />
+      </figure>
+    )}
+    <div class="instrument__body">
+      {INSTRUMENT.sponsor && (
+        <p class="instrument__sponsor">
+          <img class="instrument__sponsor-logo" src={NSF_LOGO} alt="" loading="lazy" decoding="async" data-hide-on-error />
+          <span>{INSTRUMENT.sponsor}</span>
+        </p>
+      )}
+      <h3 class="instrument__title">{INSTRUMENT.name}</h3>
+      <p class="instrument__desc">{INSTRUMENT.description}</p>
+      <p class="instrument__access">{INSTRUMENT.access}</p>
+      {INSTRUMENT.sponsorNote && <p class="instrument__note">{INSTRUMENT.sponsorNote}</p>}
+    </div>
+  </article>
+
+  <ul class="resources">
+    {RESOURCE_TOOLS.map((t) => <ResourceCard tool={t} />)}
+  </ul>
+</Section>
+
+<style>
+  .resources {
+    list-style: none; margin: var(--space-6) 0 0; padding: 0;
+    display: grid; gap: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  /* ---- Featured instrument: leads the section, photo alongside the text ---- */
+  .instrument {
+    display: grid; grid-template-columns: 1fr; gap: var(--space-6);
+    align-items: start;
+  }
+  /* Two columns only when there is actually a photo to fill the first one —
+     otherwise the body would be squeezed into the (empty) 360px photo column. */
+  .instrument--photo { grid-template-columns: 360px 1fr; }
+  .instrument__figure { margin: 0; }
+  .instrument__figure :global(img) {
+    width: 100%; height: auto; display: block;
+    border-radius: var(--radius-sm); border: 1px solid var(--c-border);
+  }
+  .instrument__body { display: flex; flex-direction: column; gap: var(--space-3); }
+
+  /* Same single white badge as .project__sponsor on the project cards. */
+  .instrument__sponsor {
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--c-brand-primary); background: #fff;
+    border: 1px solid var(--c-border); border-radius: 8px;
+    padding: 3px 10px 3px 6px;
+  }
+  .instrument__sponsor-logo { flex: none; height: 30px; width: auto; object-fit: contain; }
+
+  .instrument__title { font-size: 1.45rem; line-height: 1.2; }
+  .instrument__desc { color: var(--c-text); }
+  .instrument__access { font-weight: 600; }
+  .instrument__note { font-size: 0.9rem; color: var(--c-muted-text); }
+
+  @media (max-width: 700px) {
+    .instrument, .instrument--photo { grid-template-columns: 1fr; gap: var(--space-5); }
+  }
+</style>

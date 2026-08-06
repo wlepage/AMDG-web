@@ -33,11 +33,13 @@ Each JSON file has a leading `_comment` documenting its fields.
 | `projects.json` | project cards + `funders` logo image | `Projects.astro`, `ProjectCard.astro` |
 | `team.json` | PI / Graduate / Undergraduate people | `Team.astro` |
 | `alumni.json` | alumni groups (Postdocs / Master's / rosters) | `AlumniAccordion.astro` |
-| `contact.json` | contact blocks | `Contact.astro` |
+| `resources.json` | shared web tools + the featured instrument | `Resources.astro`, `ResourceCard.astro` |
 | `theme.json` | color tokens (injected as CSS `--c-*` vars in `Base.astro`) | — |
 
 Page composition: [`src/pages/index.astro`](src/pages/index.astro) →
-`Nav, Hero, MissionVisionApproach (#about), Highlights, Projects, Team, AlumniAccordion (#alumni), Contact, Footer`.
+`Nav, Hero, MissionVisionApproach (#about), Highlights, Projects, Team, AlumniAccordion (#alumni), Resources (#resources), Footer`.
+
+There is no Contact section — it was removed in commit `ef517a5`.
 
 ## ⚠️ Working agreement (carried over — confirm before content edits)
 
@@ -103,6 +105,28 @@ edit. Structural/CSS work does not need this, but anything that adds/changes the
 - The combined `funders` image (`/images/funders.jpg`) renders below the cards at
   `max-width: 480px`.
 
+**Community Resources** (`Resources.astro` + `ResourceCard.astro` + `resources.json`)
+- Last section on the page, `tint={true}` (Alumni is untinted, so the alternation
+  holds). Nav label is **"Resources"**; the section heading is **"Community
+  Resources"**. First and only use of the global `.lede` class.
+- `tools` render as `ResourceCard` in the same `auto-fit minmax(280px, 1fr)` grid
+  as Projects. `url` is optional — omit it and the card shows no link (that's how
+  PrecureSim is listed while in beta). `status` renders a pill using the
+  Highlights `--tag-c` / `color-mix` recipe, but with the **text mixed to 70%,
+  not 78%** — at 78% the orange is 4.45:1 on its own tint and fails the axe
+  WCAG-AA check in `tests/a11y.spec.ts`.
+- The `instrument` block (Psylotech µTS) is a featured `card` below the grid:
+  optional photo, title, `specs` as a `<dl>`, the NSF badge (same CSS as
+  `.project__sponsor`, but the logo path is hardcoded — there's only ever one),
+  a plain-text access line, and the award note.
+- The photo is gated on **`resolveImage()` succeeding**, not on the JSON string,
+  so the block renders text-only with no 404 until a real file lands at
+  `src/assets/images/resources/uts.jpg`. The two-column layout is likewise gated
+  on the `instrument--photo` modifier so the text never gets squeezed into an
+  empty photo column.
+- The MRI project card in `projects.json` cross-references this section; the
+  award appears in both places by design.
+
 **Footer** (`Footer.astro`) — single copyright line + "Back to top", both 0.92rem,
 no horizontal rule.
 
@@ -137,7 +161,18 @@ committing.
   and Alabama were already converted to optimized `<Image>` output, so they no
   longer carry the same file-size downside even though they're still JPEG/PNG
   source.)
-- Nav label is still "Projects" while the section heading is "Active Projects".
+- Nav label is still "Projects" while the section heading is "Active Projects"
+  (same for "Resources" vs "Community Resources").
+- The Psylotech µTS has no photo yet — drop a JPG/PNG at
+  `src/assets/images/resources/uts.jpg` and the featured block picks it up with
+  no code change (see Community Resources above).
+- PrecureSim has no public URL yet; adding `"url"` to its entry in
+  `resources.json` is all that's needed to turn on the link.
+- `TAG_COLORS.feature` (`#EA580C`) in `Highlights.astro` is at 4.45:1 against its
+  own pill tint, below WCAG AA. The axe test doesn't catch it because every
+  `feature`-tagged item currently sits inside the collapsed "Earlier highlights"
+  fold. Mixing the tag text to 70% instead of 78% fixes it (as `ResourceCard`
+  already does), but that restyles all five tag colors, so it's left alone.
 - The CSP in `Base.astro` needs `script-src`/`style-src` `'unsafe-inline'`
   because this single-page build inlines its scripts/styles rather than
   emitting external files with a nonce/hash target — see

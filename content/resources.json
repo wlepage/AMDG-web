@@ -1,0 +1,29 @@
+{
+  "_comment": "Resources AMDG shares with the wider research community. 'instrument' is the featured hardware block at the top of the section: 'sponsor' matches the agency-badge style used on project cards, and 'photo' is an optional /images/... path — the block renders text-only until an image exists at src/assets/images/resources/ matching that path. 'tools' are web apps rendered as cards below it: 'name' and 'description' are required; 'url' renders a link line (omit it and the card shows no link, e.g. while a tool is in beta); 'status' renders a small pill (colors live in STATUS_COLORS in ResourceCard.astro).",
+  "tools": [
+    {
+      "name": "digitalimagecorrelation.org",
+      "url": "https://digitalimagecorrelation.org",
+      "description": "A practical guide to digital image correlation, written for newcomers. It covers speckle patterning, image capture, calibration, and error validation, and surveys the available open-source DIC software."
+    },
+    {
+      "name": "e2283.app",
+      "url": "https://e2283.app",
+      "description": "Extreme value analysis of inclusion lengths following ASTM E2283. Enter 24 measurements and the app returns a Gumbel fit, for use by the fatigue community."
+    },
+    {
+      "name": "PreCureSim",
+      "status": "In beta",
+      "description": "Simulation of curing and yield for preceramic polymers."
+    }
+  ],
+  "instrument": {
+    "name": "Psylotech µTS",
+    "description": "A compact tensile testing system that can operate inside of a scanning electron microscope, as well as outside with optical microscopes and a 1600°C air furnace. It can pull up to 1.6 kN and can run fatigue tests at tens of Hz and hundreds of N.",
+    "photo": "/images/resources/uts.jpg",
+    "photoAlt": "The Psylotech µTS compact mechanical testing system.",
+    "sponsor": "NSF MRI",
+    "sponsorNote": "Funding: NSF Major Research Instrumentation award no. 2320690.",
+    "access": "The µTS is open for use by anyone in the U.S. research community. To discuss access, contact Prof. William LePage."
+  }
+}

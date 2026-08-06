@@ -13,6 +13,7 @@
     { "id": "highlights", "label": "Highlights" },
     { "id": "projects", "label": "Projects" },
     { "id": "team", "label": "Team" },
-    { "id": "alumni", "label": "Alumni" }
+    { "id": "alumni", "label": "Alumni" },
+    { "id": "resources", "label": "Resources" }
   ]
 }

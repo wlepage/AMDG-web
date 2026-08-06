@@ -1,0 +1,55 @@
+---
+import type { ResourceTool } from '@lib/content';
+
+// Status pills reuse the Highlights tag recipe: one hue drives text, background,
+// and border via color-mix, so adding a status is a single entry here plus the
+// matching string in resources.json. Unknown values fall back to muted grey.
+const STATUS_COLORS: Record<string, string> = {
+  'in beta': '#EA580C', // orange
+};
+const statusColor = (s: string) => STATUS_COLORS[s.toLowerCase()] ?? 'var(--c-muted-text)';
+
+interface Props { tool: ResourceTool; }
+const { tool: t } = Astro.props;
+---
+<li class="resource card">
+  {t.status && (
+    <p class="resource__status" style={`--tag-c: ${statusColor(t.status)}`}>{t.status}</p>
+  )}
+  <h3 class="resource__title">{t.name}</h3>
+  <p class="resource__desc">{t.description}</p>
+  {t.url && (
+    <p class="resource__link">
+      <a href={t.url} target="_blank" rel="noopener noreferrer">{t.url.replace(/^https?:\/\//, '')}</a>
+    </p>
+  )}
+</li>
+
+<style>
+  .resource { display: flex; flex-direction: column; gap: var(--space-3); }
+
+  /* Same pill recipe as .tag in Highlights.astro, except the text is mixed to
+     70% rather than 78%: at 78% this orange lands at 4.45:1 on its own tint,
+     just under the 4.5:1 WCAG AA floor that tests/a11y.spec.ts enforces. 70%
+     gives 5.27:1 with no visible change to the pill's character. */
+  .resource__status {
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
+    color: color-mix(in srgb, var(--tag-c) 70%, #000);
+    background: color-mix(in srgb, var(--tag-c) 16%, #fff);
+    border: 1px solid color-mix(in srgb, var(--tag-c) 45%, #fff);
+    border-radius: 999px; padding: 3px var(--space-3);
+  }
+  .resource__status::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--tag-c); flex: 0 0 auto;
+  }
+
+  .resource__title { font-size: 1.15rem; line-height: 1.3; overflow-wrap: anywhere; }
+  .resource__desc { color: var(--c-muted-text); }
+  /* Pins the link to the bottom so link rows align across cards of unequal
+     text length (same trick as .project__collab). */
+  .resource__link { margin-top: auto; font-size: 0.9rem; font-weight: 600; }
+  .resource__link a { word-break: break-word; }
+</style>
