@@ -133,11 +133,10 @@ edit. Structural/CSS work does not need this, but anything that adds/changes the
 no horizontal rule.
 
 **Favicon** (`public/favicon.svg` + `public/apple-touch-icon.png`)
-- Black rounded-square **AM/DG** monogram. The letters are **vector paths**
-  (Helvetica Bold outlines extracted via `fonttools`), so it renders identically
-  without depending on an installed font. The 180×180 `apple-touch-icon.png` is
-  rasterized from the SVG with `sharp` — regenerate it if the SVG changes. Both
-  are linked in `Base.astro`.
+- Transparent TU-blue **AM/DG** serif monogram. The letters are vector paths, so
+  it renders identically without depending on an installed font. The 180×180
+  `apple-touch-icon.png` is rasterized from the SVG with `sharp` — regenerate it
+  if the SVG changes. Both are linked in `Base.astro`.
 
 **Images** (`src/lib/images.ts`) — raster photos that benefit from real
 optimization (resize/webp/`srcset`) live in `src/assets/images/**`, not
