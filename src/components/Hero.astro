@@ -220,6 +220,13 @@ const canAutoAdvance = stage === 'carousel' && n > 1 && autoAdvanceMs > 0;
     transition: background-color 0.15s ease, border-color 0.15s ease;
   }
   .carousel__dot[aria-current='true']::before { background: var(--c-brand-accent); border-color: var(--c-accent-strong); }
+
+  @media (max-width: 520px) {
+    .carousel__controls { gap: var(--space-1); flex-wrap: nowrap; }
+    .carousel__btn { width: 40px; height: 40px; }
+    .carousel__dot { width: 20px; height: 24px; }
+    .carousel__dot::before { width: 9px; height: 9px; }
+  }
 </style>
 
 <script>

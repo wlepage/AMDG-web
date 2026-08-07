@@ -120,6 +120,14 @@ const nsfLogo = resolveImage(NSF_LOGO);
     max-width: 58rem; margin-bottom: var(--space-4);
     color: var(--c-accent-strong); font-family: var(--font-sans);
     font-size: 1rem; line-height: 1.45; font-weight: 600;
+    padding: var(--space-3) var(--space-4);
+    border-left: 3px solid var(--c-brand-accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--c-brand-accent) 8%, var(--c-background)),
+      color-mix(in srgb, var(--c-brand-accent) 2%, var(--c-background))
+    );
   }
   .instrument-resources {
     list-style: none; margin: 0; padding: 0;

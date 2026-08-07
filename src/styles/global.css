@@ -32,7 +32,7 @@
   --space-5: 1.5rem; --space-6: 2rem; --space-7: 3rem; --space-8: 4rem; --space-9: 6rem;
 
   --radius: 12px; --radius-sm: 8px; --radius-lg: 20px;
-  --shadow-sm: 0 1px 2px rgba(15, 27, 42, 0.06), 0 1px 3px rgba(15, 27, 42, 0.08);
+  --shadow-sm: 0 1px 2px rgba(15, 27, 42, 0.05), 0 8px 24px rgba(15, 27, 42, 0.045);
   --shadow-md: 0 4px 12px rgba(15, 27, 42, 0.08), 0 2px 4px rgba(15, 27, 42, 0.06);
 
   --container: 1120px;
@@ -126,8 +126,13 @@ a:hover { color: var(--c-accent-strong); }
 
 /* ---- Cards ---- */
 .card {
-  background: var(--c-background);
-  border: 1px solid var(--c-border);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--c-brand-accent) 3%, var(--c-background)) 0%,
+      var(--c-background) 42%
+    );
+  border: 1px solid color-mix(in srgb, var(--c-brand-primary) 10%, var(--c-border));
   border-radius: var(--radius);
   padding: var(--space-5);
   box-shadow: var(--shadow-sm);
