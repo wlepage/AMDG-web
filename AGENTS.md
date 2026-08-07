@@ -33,7 +33,7 @@ Each JSON file has a leading `_comment` documenting its fields.
 | `projects.json` | project cards + `funders` logo image | `Projects.astro`, `ProjectCard.astro` |
 | `team.json` | PI / Graduate / Undergraduate people | `Team.astro` |
 | `alumni.json` | alumni groups (Postdocs / Master's / rosters) | `AlumniAccordion.astro` |
-| `resources.json` | shared web tools + the featured instrument | `Resources.astro`, `ResourceCard.astro` |
+| `resources.json` | shared web tools + featured instruments | `Resources.astro`, `ResourceCard.astro` |
 | `theme.json` | color tokens (injected as CSS `--c-*` vars in `Base.astro`) | — |
 
 Page composition: [`src/pages/index.astro`](src/pages/index.astro) →
@@ -55,6 +55,8 @@ edit. Structural/CSS work does not need this, but anything that adds/changes the
 - Tags & colors live in `TAG_COLORS` in the component: `award` gold,
   `publication` blue, `project` green, `thesis` teal, `feature` orange.
   **There is no `grant` tag** — grants were merged into `project`.
+- Tag text is mixed to 65% of its category color against black so every tag,
+  including gold `award` and orange `feature`, passes WCAG AA on its tint.
 - `text` is rendered with `set:html`, so **journal names are wrapped in `<em>`**
   and any literal `<`, `>`, `&` must be HTML-escaped (e.g. `&amp;`).
 - Optional `link` field (a `https://doi.org/…` URL) renders as a clickable DOI
@@ -97,9 +99,9 @@ edit. Structural/CSS work does not need this, but anything that adds/changes the
   parenthetical token (`"Name (Umich, PI)"` → `umich`), files in
   `public/images/institutions/`. Sponsor logos float to **30px tall** (width
   follows aspect ratio); collab chips are a fixed **30×30** `contain` box.
-- A missing logo is hidden via `onerror="this.remove()"`, so dropping a file in
-  *after* the page loaded needs a full browser reload (a hot-reload won't re-add
-  the removed `<img>`).
+- A missing logo is hidden by the delegated `data-hide-on-error` listener, so
+  dropping a file in *after* the page loaded needs a full browser reload (a
+  hot-reload won't re-add the removed `<img>`).
 - Set `"earlier": true` on a project to move it into the collapsed **"Completed
   Projects"** disclosure — same `year-fold` styling as the Highlights fold.
 - The combined `funders` image (`/images/funders.jpg`) renders below the cards at
@@ -108,22 +110,22 @@ edit. Structural/CSS work does not need this, but anything that adds/changes the
 **Community Resources** (`Resources.astro` + `ResourceCard.astro` + `resources.json`)
 - Last section on the page, `tint={true}` (Alumni is untinted, so the alternation
   holds). Nav label is **"Resources"**; the section heading is **"Community
-  Resources"**. First and only use of the global `.lede` class.
+  Resources"**.
 - `tools` render as `ResourceCard` in the same `auto-fit minmax(280px, 1fr)` grid
   as Projects. `url` is optional — omit it and the card shows no link (that's how
   PrecureSim is listed while in beta). `status` renders a pill using the
   Highlights `--tag-c` / `color-mix` recipe, but with the **text mixed to 70%,
   not 78%** — at 78% the orange is 4.45:1 on its own tint and fails the axe
   WCAG-AA check in `tests/a11y.spec.ts`.
-- The `instrument` block (Psylotech µTS) is a featured `card` below the grid:
-  optional photo, title, `specs` as a `<dl>`, the NSF badge (same CSS as
-  `.project__sponsor`, but the logo path is hardcoded — there's only ever one),
-  a plain-text access line, and the award note.
-- The photo is gated on **`resolveImage()` succeeding**, not on the JSON string,
-  so the block renders text-only with no 404 until a real file lands at
-  `src/assets/images/resources/uts.jpg`. The two-column layout is likewise gated
-  on the `instrument--photo` modifier so the text never gets squeezed into an
-  empty photo column.
+- `instruments[]` renders in array order: featured Psylotech µTS → web tools →
+  a compact three-card grid for Legolas, Gimli, and Keyence. The µTS entry's
+  `toolsAfter: true` marks the split; it carries its own access statement,
+  hardcoded-NSF badge, and award note. `instrumentHeading` labels the compact
+  College of Engineering & Computer Science resource grid.
+- Each photo is gated on **`resolveImage()` succeeding**, not on the JSON string,
+  so a card renders text-only with no 404 when its file is absent. The featured
+  µTS uses text-left/photo-right columns on wide screens and lets the photo fall
+  below the text on narrow screens; compact cards show photos below descriptions.
 - The MRI project card in `projects.json` cross-references this section; the
   award appears in both places by design.
 
@@ -166,21 +168,16 @@ committing.
 - The Psylotech µTS has no photo yet — drop a JPG/PNG at
   `src/assets/images/resources/uts.jpg` and the featured block picks it up with
   no code change (see Community Resources above).
+- The four former hero figures (`building`, `sintering`, `research-overview`,
+  and `length-scales`) were superseded by lab photography; recover them from
+  version history if they are needed again.
 - PrecureSim has no public URL yet; adding `"url"` to its entry in
   `resources.json` is all that's needed to turn on the link.
-- `TAG_COLORS.feature` (`#EA580C`) in `Highlights.astro` is at 4.45:1 against its
-  own pill tint, below WCAG AA. The axe test doesn't catch it because every
-  `feature`-tagged item currently sits inside the collapsed "Earlier highlights"
-  fold. Mixing the tag text to 70% instead of 78% fixes it (as `ResourceCard`
-  already does), but that restyles all five tag colors, so it's left alone.
 - The CSP in `Base.astro` needs `script-src`/`style-src` `'unsafe-inline'`
   because this single-page build inlines its scripts/styles rather than
   emitting external files with a nonce/hash target — see
   `SECURITY_A11Y_PERF_REVIEW.md` for the full tradeoff and a possible
   hash-based follow-up.
-- `AlumniAccordion.astro` doesn't actually collapse/expand despite its name;
-  `tests/a11y.spec.ts`'s accordion test is stale against the current static-list
-  design. Needs a product decision (see `SECURITY_A11Y_PERF_REVIEW.md`).
 
 ## Deploy (not yet a git repo)
 GitHub Pages via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) on

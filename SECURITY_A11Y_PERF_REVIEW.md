@@ -21,6 +21,28 @@ config (`astro.config.mjs`) needed no changes since this site only uses `site`,
 `base`, `trailingSlash`, `build.inlineStylesheets`, and the sitemap integration,
 none of which changed between major versions.
 
+**Revalidated 2026-08-07:** a new high-severity `js-yaml` advisory
+(`CVE-2026-59870` / `GHSA-5p4m-2wfm-xmqj`) had appeared since this review. Ran
+`npm audit fix`, updating `js-yaml` 4.3.0 → 4.3.1 in `package-lock.json`; a fresh
+`npm audit` again reports 0 vulnerabilities.
+
+**Hardened 2026-08-07 — deployment supply chain and dependency monitoring.**
+Pinned all four GitHub-hosted actions in `.github/workflows/deploy.yml` to the
+full immutable commit SHAs for their current releases, retaining version comments
+for readability and Dependabot maintenance. Added `.github/dependabot.yml` with
+weekly grouped npm and GitHub Actions updates. Enabled Dependabot vulnerability
+alerts and automated security-fix pull requests in the GitHub repository; the
+API confirms alerts are active and automated fixes are enabled and unpaused.
+Secret scanning and repository push protection were also enabled on 2026-08-07;
+the GitHub API confirms both report `enabled`.
+
+Additional low-risk hardening moved `pages: write` and `id-token: write` from
+workflow-wide permissions to the deploy job only, disabled persisted checkout
+credentials, added 10-minute job timeouts, and added a production-dependency
+audit gate before each build. Updated compatible tooling to Astro 7.2.0,
+Playwright 1.62.1, and axe-playwright 4.12.1; the full build and browser suite
+pass and `npm audit` reports 0 vulnerabilities.
+
 **Fixed — inline event handlers blocked a real CSP.**
 `ProjectCard.astro` had `onerror="this.remove()"` on two `<img>` tags (sponsor
 and collaborator-institution logos) to hide broken images gracefully. Inline
@@ -38,11 +60,14 @@ custom HTTP headers at all, so the only lever is `<meta http-equiv>` in
 default-src 'self'; img-src 'self' data:;
 frame-src https://www.youtube-nocookie.com https://player.vimeo.com;
 style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline';
-base-uri 'self'; form-action 'none'; object-src 'none'
+script-src-attr 'none'; base-uri 'self'; form-action 'none';
+object-src 'none'; upgrade-insecure-requests
 ```
 plus `<meta name="referrer" content="strict-origin-when-cross-origin">`.
+`script-src-attr 'none'` still blocks injected event-handler attributes, and
+`upgrade-insecure-requests` prevents accidental mixed-content loads.
 **Known limitation, documented inline in `Base.astro`:** this site's build
-inlines its two component `<script>` blocks and the theme-vars `<style
+inlines its component `<script>` blocks and the theme-vars `<style
 set:html>` block directly into the HTML (single-page site, no external chunk
 files), so there's no nonce/hash to pin them to — `script-src` and `style-src`
 both need `'unsafe-inline'`. That means this CSP does **not** stop inline-script
@@ -64,8 +89,8 @@ this assumption needs revisiting.
 The only "contact" mechanism is a `mailto:` link (`Team.astro`). Grepped the
 whole repo for `API_KEY|SECRET|TOKEN|PASSWORD` (case-insensitive) — no hits
 beyond the word "token" meaning CSS design tokens. The GitHub Actions deploy
-workflow's permissions (`contents: read, pages: write, id-token: write`) are
-already minimally scoped.
+workflow gives the build job only `contents: read`; `pages: write` and
+`id-token: write` are scoped to the deploy job.
 
 **No action needed — external links.** All 3 `target="_blank"` links already
 pair `rel="noopener noreferrer"`. The YouTube/Vimeo embeds use the
@@ -88,25 +113,31 @@ double-checking:
 All comfortably clear the 4.5:1 AA threshold for normal text. No color changes
 made.
 
-**No action needed — nav, carousel, disclosure widgets.** Nav toggle and
-carousel controls are real `<button>`s with `aria-expanded`/`aria-controls`/
-`aria-live`/`aria-current`, focus returns to the toggle on Escape, and
-`prefers-reduced-motion` is respected. The Highlights "Earlier highlights" fold
+**Improved — carousel rotation follows the ARIA APG interaction pattern.** The
+rotation control is now the first carousel control in the tab order, has a
+changing Start/Stop accessible label instead of `aria-pressed`, and keyboard
+focus stops rotation until the visitor explicitly restarts it. Hover and hidden
+tabs still pause temporarily, and `prefers-reduced-motion` remains respected.
+
+**Fixed — every Highlights tag is now included in contrast testing.** Tag text
+is mixed to 65% of its category color against black. Opening the normally closed
+"Earlier highlights" disclosure during the axe scan exposed and fixed both the
+orange `feature` case and a 4.32:1 gold `award` case; the expanded scan now passes.
+
+**No action needed — nav and disclosure widgets.** Nav controls are real
+`<button>`s with `aria-expanded`/`aria-controls`, focus returns to the toggle on
+Escape, and the Highlights "Earlier highlights" fold
 uses a native `<details>/<summary>`, which gets correct keyboard/AT semantics
 for free. Skip link and `lang="en"` are present and wired correctly. Alt text
 is meaningful on all photographic images; decorative sponsor/institution logos
 correctly use `alt=""`.
 
-**Flagged, not changed — `AlumniAccordion.astro` doesn't actually collapse.**
-Despite the name, it renders a fully static, always-expanded list — no
-`<details>`, no expand/collapse JS. This is why `tests/a11y.spec.ts`'s
-"alumni accordion toggles and Collapse all works" test currently fails looking
-for a `.acc-trigger` element that doesn't exist in the component — **this is a
-pre-existing stale test, not a regression from this review** (verified: the
-component had no accordion behavior before any of today's changes either).
-Whether the component should regain real collapse/expand behavior, or the test
-should be deleted/rewritten to match the current static-list design, is a
-product decision the site owner should make — left as-is here.
+**Fixed — Alumni test now matches the always-expanded design.**
+The site owner confirmed that Alumni should remain a fully visible static list,
+with no disclosure controls. Replaced the stale accordion interaction test with
+coverage that verifies every alumni group heading and list is visible and that
+the section contains no `<details>`, `aria-expanded`, `.acc-trigger`, or button
+controls.
 
 ## Performance
 
@@ -160,15 +191,24 @@ change made.
 polling; slide transitions are pure `opacity` (compositor-friendly). No change
 made.
 
+**Fixed — inactive carousel photos no longer download during initial load.**
+Inactive slides now use `content-visibility: hidden`; their images remain lazy
+and low priority, while the first image is eager and high priority. A clean
+production-browser measurement at 1440×900 requested only the active glovebox
+photo initially, down from all six carousel photos (about 331 KB combined in the
+earlier measurement).
+
 ## Verification performed
 
 - `npx astro build` succeeds cleanly after every change (dependency upgrade,
   CSP addition, image pipeline migration).
 - `npm audit` — 0 vulnerabilities (was 6: 1 low, 5 high).
 - `npm run test:a11y` (Playwright + axe-core against the real production
-  build via `astro build && astro preview`) — 4/5 pass, including the WCAG
-  2.x A/AA axe scan; the 1 failure is the pre-existing stale alumni-accordion
-  test described above, unrelated to this review's changes.
+  build via `astro build && astro preview`) — all 5 tests pass, including the
+  expanded-content WCAG 2.x A/AA axe scan, carousel rotation behavior, and the
+  always-expanded Alumni behavior check.
+- Production browser request trace at 1440×900 — one initial carousel image
+  request (`glovebox…webp`), with all five inactive images deferred.
 - Spot-checked `dist/index.html` and the generated `_astro/*.css` to confirm
   the CSP/referrer meta tags render, `<Image>`-generated `srcset`/webp output
   is present, and Astro's scoped-CSS `data-astro-cid-*` attributes still land
@@ -179,16 +219,20 @@ made.
   independent check.
 
 ## Files changed
-- `package.json` / `package-lock.json` — Astro 5.18.2 → 7.1.5, `@astrojs/sitemap` → latest, transitive audit fixes
-- `src/layouts/Base.astro` — CSP + referrer-policy meta tags
+- `package.json` / `package-lock.json` — Astro 5.18.2 → 7.2.0,
+  `@astrojs/sitemap` and test tooling updated, transitive audit fixes
+- `src/layouts/Base.astro` — CSP + referrer-policy meta tags, inline-handler
+  blocking, and insecure-request upgrading
 - `src/components/ProjectCard.astro` — removed inline `onerror=`, added `<Image>` for raster logos
-- `src/components/Hero.astro`, `Team.astro`, `Projects.astro` — `<Image>` adoption
+- `src/components/Hero.astro`, `Team.astro`, `Projects.astro` — `<Image>` adoption;
+  Hero also defers inactive slides and implements APG-style rotation controls
+- `src/components/Highlights.astro` — WCAG-AA tag text colors
 - `src/lib/images.ts` — new glob-based image resolver
 - `src/assets/images/**` — raster photos moved here from `public/images/**` (git-tracked renames)
 - `public/images/partners/doe.svg`, `nsf.svg`, `public/images/institutions/northwestern.svg` — svgo-compressed in place
-
-## Open item for the site owner
-Decide whether `AlumniAccordion.astro` should regain real collapse/expand
-behavior (matching its name and the existing but now-stale Playwright test),
-or whether the test should be updated to match its current always-expanded
-design. Not resolved here — it's a product decision, not a defect.
+- `tests/a11y.spec.ts` — replaced the stale accordion test, opens hidden
+  Highlights for axe, and tests carousel rotation behavior.
+- `.github/workflows/deploy.yml` — pinned all actions to full commit SHAs,
+  least-privilege job permissions, non-persisted checkout credentials, bounded
+  runtimes, and a high-severity production audit gate.
+- `.github/dependabot.yml` — weekly grouped npm and GitHub Actions updates.

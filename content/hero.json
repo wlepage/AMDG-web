@@ -16,20 +16,28 @@
   },
   "slides": [
     {
-      "src": "/images/hero/building.jpg",
-      "alt": "Stephenson Hall at The University of Tulsa, the stone building that houses the AMDG lab, photographed at sunset."
+      "src": "/images/hero/glovebox.jpg",
+      "alt": "AMDG members working at an inert-atmosphere argon glovebox, one reaching into the gloves to handle a sample."
     },
     {
-      "src": "/images/hero/sintering.jpg",
-      "alt": "Scanning electron microscope image series showing copper-coated Ti-6Al-4V powder particles forming sintering necks as temperature increases from 35 to 950 degrees Celsius."
+      "src": "/images/hero/dic-software.jpg",
+      "alt": "An AMDG member and Prof. LePage review digital image correlation software output on a lab monitor."
     },
     {
-      "src": "/images/hero/research-overview.jpg",
-      "alt": "Diagram of the group's research spanning basic science, core capabilities, and applied research in aerospace, biomedical, energy, defense, and manufacturing."
+      "src": "/images/hero/keyence-microscopy.jpg",
+      "alt": "Two AMDG members examine a micrograph on the Keyence digital microscope's display."
     },
     {
-      "src": "/images/hero/length-scales.jpg",
-      "alt": "Figure showing how the group's characterization methods span nanoscale, microscale, and mesoscale length scales of sintering."
+      "src": "/images/hero/load-frame-setup.jpg",
+      "alt": "Two AMDG members in safety glasses mount a specimen into the grips of a load frame."
+    },
+    {
+      "src": "/images/hero/vacuum-instrument.jpg",
+      "alt": "Two AMDG members load a sample into the Helios dual-beam scanning electron microscope in the materials lab."
+    },
+    {
+      "src": "/images/hero/instrument-interior.jpg",
+      "alt": "AMDG member replaces the vacuum gauge in the Helios dual-beam scanning electron microscope, lit by blue light."
     }
   ]
 }

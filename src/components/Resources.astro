@@ -2,14 +2,19 @@
 import { Image } from 'astro:assets';
 import Section from './Section.astro';
 import ResourceCard from './ResourceCard.astro';
-import { RESOURCE_TOOLS, INSTRUMENT } from '@lib/content';
+import { RESOURCE_TOOLS, RESOURCE_INSTRUMENT_HEADING, INSTRUMENTS } from '@lib/content';
 import { resolveImage } from '@lib/images';
 
-// The instrument photo is optional, and the figure is gated on the *resolved*
-// image rather than the JSON string: until a real file exists at
-// src/assets/images/resources/ matching that path, the figure is skipped
-// entirely, so the block renders text-only with no gap and no 404 request.
-const instrumentPhoto = INSTRUMENT.photo ? resolveImage(INSTRUMENT.photo) : undefined;
+const instruments = INSTRUMENTS.map((instrument) => ({
+  ...instrument,
+  resolvedPhotos: (instrument.photos ?? []).flatMap((photo) => {
+    const src = resolveImage(photo.src);
+    return src ? [{ ...photo, src }] : [];
+  }),
+}));
+const toolsAfterIndex = instruments.findIndex((instrument) => instrument.toolsAfter);
+const featuredInstruments = instruments.slice(0, toolsAfterIndex + 1);
+const compactInstruments = instruments.slice(toolsAfterIndex + 1);
 
 // The one sponsor badge on this page is always NSF (the MRI award), so unlike
 // ProjectCard there is nothing to look up — the path is fixed. It lives in
@@ -18,34 +23,59 @@ const instrumentPhoto = INSTRUMENT.photo ? resolveImage(INSTRUMENT.photo) : unde
 const NSF_LOGO = '/images/partners/nsf.svg';
 ---
 <Section id="resources" heading="Community Resources" tint={true}>
-  <article class:list={['instrument', 'card', { 'instrument--photo': instrumentPhoto }]}>
-    {instrumentPhoto && (
-      <figure class="instrument__figure">
-        <Image src={instrumentPhoto} alt={INSTRUMENT.photoAlt ?? ''} widths={[360, 720]} sizes="(max-width: 700px) 100vw, 360px" loading="lazy" decoding="async" />
-      </figure>
-    )}
-    <div class="instrument__body">
-      {INSTRUMENT.sponsor && (
-        <p class="instrument__sponsor">
-          <img class="instrument__sponsor-logo" src={NSF_LOGO} alt="" loading="lazy" decoding="async" data-hide-on-error />
-          <span>{INSTRUMENT.sponsor}</span>
-        </p>
+  {featuredInstruments.map((instrument) => (
+    <article class:list={['instrument', 'card', { 'instrument--photo': instrument.resolvedPhotos.length > 0 }]}>
+      <div class="instrument__body">
+        {instrument.sponsor && (
+          <p class="instrument__sponsor">
+            <img class="instrument__sponsor-logo" src={NSF_LOGO} alt="" loading="lazy" decoding="async" data-hide-on-error />
+            <span>{instrument.sponsor}</span>
+          </p>
+        )}
+        <h3 class="instrument__title">{instrument.name}</h3>
+        <p class="instrument__desc">{instrument.description}</p>
+        {instrument.access && <p class="instrument__access">{instrument.access}</p>}
+        {instrument.sponsorNote && <p class="instrument__note">{instrument.sponsorNote}</p>}
+      </div>
+      {instrument.resolvedPhotos.length > 0 && (
+        <figure class="instrument__figure">
+          {instrument.resolvedPhotos.map((photo) => (
+            <Image src={photo.src} alt={photo.alt} widths={[260, 520]} sizes="260px" loading="lazy" decoding="async" />
+          ))}
+        </figure>
       )}
-      <h3 class="instrument__title">{INSTRUMENT.name}</h3>
-      <p class="instrument__desc">{INSTRUMENT.description}</p>
-      <p class="instrument__access">{INSTRUMENT.access}</p>
-      {INSTRUMENT.sponsorNote && <p class="instrument__note">{INSTRUMENT.sponsorNote}</p>}
-    </div>
-  </article>
+    </article>
+  ))}
 
   <ul class="resources">
     {RESOURCE_TOOLS.map((t) => <ResourceCard tool={t} />)}
   </ul>
+
+  {compactInstruments.length > 0 && (
+    <div class="instrument-resources-wrap">
+      <h3 class="instrument-resources-heading">{RESOURCE_INSTRUMENT_HEADING}</h3>
+      <ul class="instrument-resources">
+        {compactInstruments.map((instrument) => (
+          <li class="compact-instrument card">
+            <h4 class="compact-instrument__title">{instrument.name}</h4>
+            <p class="compact-instrument__desc">{instrument.description}</p>
+            {instrument.resolvedPhotos.length > 0 && (
+              <figure class="compact-instrument__figure">
+                {instrument.resolvedPhotos.map((photo) => (
+                  <Image src={photo.src} alt={photo.alt} widths={[280, 480]} sizes="(max-width: 700px) 100vw, 30vw" loading="lazy" decoding="async" />
+                ))}
+              </figure>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
 </Section>
 
 <style>
   .resources {
-    list-style: none; margin: var(--space-6) 0 0; padding: 0;
+    list-style: none; margin: var(--space-6) 0; padding: 0;
     display: grid; gap: var(--space-5);
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
@@ -55,10 +85,11 @@ const NSF_LOGO = '/images/partners/nsf.svg';
     display: grid; grid-template-columns: 1fr; gap: var(--space-6);
     align-items: start;
   }
-  /* Two columns only when there is actually a photo to fill the first one —
-     otherwise the body would be squeezed into the (empty) 360px photo column. */
-  .instrument--photo { grid-template-columns: 360px 1fr; }
-  .instrument__figure { margin: 0; }
+  .instrument--photo { grid-template-columns: minmax(0, 1fr) 260px; }
+  .instrument__figure {
+    width: min(260px, 100%); margin: 0; justify-self: end;
+    display: flex; flex-direction: column; gap: var(--space-3);
+  }
   .instrument__figure :global(img) {
     width: 100%; height: auto; display: block;
     border-radius: var(--radius-sm); border: 1px solid var(--c-border);
@@ -81,7 +112,34 @@ const NSF_LOGO = '/images/partners/nsf.svg';
   .instrument__access { font-weight: 600; }
   .instrument__note { font-size: 0.9rem; color: var(--c-muted-text); }
 
+  .instrument-resources-wrap { margin-top: var(--space-6); }
+  .instrument-resources-heading {
+    max-width: 58rem; margin-bottom: var(--space-4);
+    color: var(--c-accent-strong); font-family: var(--font-sans);
+    font-size: 1rem; line-height: 1.45; font-weight: 600;
+  }
+  .instrument-resources {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  .compact-instrument {
+    display: flex; flex-direction: column; gap: var(--space-3);
+  }
+  .compact-instrument__figure {
+    margin: auto 0 0; display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: var(--space-2);
+  }
+  .compact-instrument__figure :global(img) {
+    width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block;
+    border-radius: var(--radius-sm); border: 1px solid var(--c-border);
+  }
+  .compact-instrument__title { font-size: 1.1rem; line-height: 1.3; }
+  .compact-instrument__desc { color: var(--c-muted-text); font-size: 0.92rem; }
+
   @media (max-width: 700px) {
     .instrument, .instrument--photo { grid-template-columns: 1fr; gap: var(--space-5); }
+    .instrument__figure { justify-self: center; }
   }
 </style>

@@ -51,10 +51,11 @@ export interface Person {
 export interface TeamGroup { title: string; members: Person[]; }
 
 export interface ResourceTool { name: string; url?: string; status?: string; description: string; }
+export interface InstrumentPhoto { src: string; alt: string; }
 export interface Instrument {
   name: string; description: string;
-  photo?: string; photoAlt?: string;
-  sponsor?: string; sponsorNote?: string; access: string;
+  photos?: InstrumentPhoto[];
+  sponsor?: string; sponsorNote?: string; access?: string; toolsAfter?: boolean;
 }
 
 export interface AlumniMember { name: string; thesis?: string; placement?: string; }
@@ -72,7 +73,8 @@ export const FUNDERS = (projects.funders as Funders);
 export const TEAM = (team.groups as unknown as TeamGroup[]);
 export const ALUMNI = (alumni.groups as unknown as AlumniGroup[]);
 export const RESOURCE_TOOLS = (resources.tools as ResourceTool[]);
-export const INSTRUMENT = (resources.instrument as unknown as Instrument);
+export const RESOURCE_INSTRUMENT_HEADING = resources.instrumentHeading as string;
+export const INSTRUMENTS = resources.instruments as unknown as Instrument[];
 
 // Highlights are always returned newest-first regardless of source order.
 export const HIGHLIGHTS: Highlight[] = [...(highlights.items as Highlight[])].sort(

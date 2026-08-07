@@ -82,6 +82,7 @@ const canAutoAdvance = stage === 'carousel' && n > 1 && autoAdvanceMs > 0;
                         widths={[480, 800, 1200, 1600]}
                         sizes="(min-width: 920px) 55vw, 100vw"
                         loading={i === 0 ? 'eager' : 'lazy'}
+                        fetchpriority={i === 0 ? 'high' : 'low'}
                         decoding="async"
                       />
                     ) : (
@@ -91,6 +92,7 @@ const canAutoAdvance = stage === 'carousel' && n > 1 && autoAdvanceMs > 0;
                         width="1600"
                         height="900"
                         loading={i === 0 ? 'eager' : 'lazy'}
+                        fetchpriority={i === 0 ? 'high' : 'low'}
                         decoding="async"
                       />
                     );
@@ -102,6 +104,13 @@ const canAutoAdvance = stage === 'carousel' && n > 1 && autoAdvanceMs > 0;
 
           {n > 1 && (
             <div class="carousel__controls">
+              {canAutoAdvance && (
+                <button class="carousel__btn carousel__btn--play" type="button" data-playpause data-playing="true">
+                  <span class="carousel__icon" aria-hidden="true"></span>
+                  <span class="visually-hidden" data-playpause-label>Stop automatic slide rotation</span>
+                </button>
+              )}
+
               <button class="carousel__btn" type="button" data-prev>
                 <span aria-hidden="true">‹</span>
                 <span class="visually-hidden">Previous slide</span>
@@ -118,13 +127,6 @@ const canAutoAdvance = stage === 'carousel' && n > 1 && autoAdvanceMs > 0;
                   ></button>
                 ))}
               </div>
-
-              {canAutoAdvance && (
-                <button class="carousel__btn carousel__btn--play" type="button" data-playpause aria-pressed="true">
-                  <span class="carousel__icon" aria-hidden="true"></span>
-                  <span class="visually-hidden" data-playpause-label>Pause automatic slide rotation</span>
-                </button>
-              )}
 
               <button class="carousel__btn" type="button" data-next>
                 <span aria-hidden="true">›</span>
@@ -165,23 +167,25 @@ const canAutoAdvance = stage === 'carousel' && n > 1 && autoAdvanceMs > 0;
   /* ---- Stage ---- */
   .hero__stage { width: 100%; }
   .stage-media, .carousel__viewport {
-    aspect-ratio: 16 / 9; border-radius: var(--radius-lg);
+    border-radius: var(--radius-lg);
     overflow: hidden; box-shadow: var(--shadow-md);
     border: 1px solid var(--c-border);
     background:
       linear-gradient(135deg, var(--c-brand-secondary), var(--c-brand-primary));
   }
+  .stage-media { aspect-ratio: 16 / 9; }
+  .carousel__viewport { aspect-ratio: 3 / 2; }
   .stage-media iframe, .stage-media video { width: 100%; height: 100%; border: 0; display: block; }
 
   .carousel { position: relative; }
   .carousel__track { position: relative; height: 100%; }
   .carousel__slide {
     position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease;
-    display: grid; place-items: center;
+    display: grid; place-items: center; content-visibility: hidden;
   }
-  .carousel__slide.is-active { opacity: 1; }
+  .carousel__slide.is-active { opacity: 1; content-visibility: visible; }
   .carousel__slide img {
-    width: 100%; height: 100%; object-fit: contain; /* show full figures, no cropping */
+    width: 100%; height: 100%; object-fit: contain; /* show each photograph in full */
     background: color-mix(in srgb, var(--c-brand-secondary) 92%, black);
   }
 
@@ -200,7 +204,7 @@ const canAutoAdvance = stage === 'carousel' && n > 1 && autoAdvanceMs > 0;
     width: 12px; height: 12px;
     border-style: double; border-width: 0 0 0 12px; border-color: currentColor; /* pause bars */
   }
-  .carousel__btn--play[aria-pressed='false'] .carousel__icon {
+  .carousel__btn--play[data-playing='false'] .carousel__icon {
     width: 0; height: 0; border-style: solid;
     border-width: 7px 0 7px 12px; border-color: transparent transparent transparent currentColor; /* play triangle */
   }
@@ -259,15 +263,19 @@ const canAutoAdvance = stage === 'carousel' && n > 1 && autoAdvanceMs > 0;
       playing = false;
       if (timer) window.clearInterval(timer);
       timer = undefined;
-      if (playBtn) playBtn.setAttribute('aria-pressed', 'false');
+      if (playBtn) playBtn.dataset.playing = 'false';
       if (playLabel) playLabel.textContent = 'Start automatic slide rotation';
     };
     const start = () => {
-      if (!interval || reduceMotion.matches) return;
+      if (!interval || reduceMotion.matches) {
+        stop();
+        return;
+      }
+      if (timer) window.clearInterval(timer);
       playing = true;
       timer = window.setInterval(() => go(index + 1, false), interval);
-      if (playBtn) playBtn.setAttribute('aria-pressed', 'true');
-      if (playLabel) playLabel.textContent = 'Pause automatic slide rotation';
+      if (playBtn) playBtn.dataset.playing = 'true';
+      if (playLabel) playLabel.textContent = 'Stop automatic slide rotation';
     };
 
     prev?.addEventListener('click', () => { stop(); go(index - 1); });
@@ -275,18 +283,32 @@ const canAutoAdvance = stage === 'carousel' && n > 1 && autoAdvanceMs > 0;
     dots.forEach((dot, i) => dot.addEventListener('click', () => { stop(); go(i); }));
     playBtn?.addEventListener('click', () => (playing ? stop() : start()));
 
-    // Pause on hover/focus within; resume when leaving (if it was auto-playing).
-    let wasPlaying = false;
-    const pauseTemp = () => { if (playing) { wasPlaying = true; stop(); } };
-    const resumeTemp = () => { if (wasPlaying) { wasPlaying = false; start(); } };
-    root.addEventListener('mouseenter', pauseTemp);
-    root.addEventListener('mouseleave', resumeTemp);
-    root.addEventListener('focusin', pauseTemp);
-    root.addEventListener('focusout', (e) => {
-      if (!root.contains(e.relatedTarget as Node)) resumeTemp();
+    // Hover and a hidden tab pause temporarily. Keyboard focus stops rotation
+    // until the visitor explicitly starts it again, following the APG pattern.
+    let resumeAfterHover = false;
+    let resumeAfterVisibility = false;
+    root.addEventListener('mouseenter', () => {
+      if (playing) {
+        resumeAfterHover = true;
+        stop();
+      }
+    });
+    root.addEventListener('mouseleave', () => {
+      if (resumeAfterHover && !root.matches(':focus-within')) start();
+      resumeAfterHover = false;
+    });
+    root.addEventListener('focusin', () => {
+      resumeAfterHover = false;
+      stop();
     });
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden) pauseTemp(); else resumeTemp();
+      if (document.hidden) {
+        resumeAfterVisibility = playing;
+        stop();
+      } else if (resumeAfterVisibility && !root.matches(':focus-within')) {
+        resumeAfterVisibility = false;
+        start();
+      }
     });
     reduceMotion.addEventListener('change', () => { if (reduceMotion.matches) stop(); });
 
