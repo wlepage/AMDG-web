@@ -4,14 +4,13 @@ import AxeBuilder from '@axe-core/playwright';
 test.describe('AMDG single-page site — accessibility', () => {
   test('has no detectable WCAG 2.x A/AA violations', async ({ page }) => {
     await page.goto('/');
-    // Axe cannot inspect content hidden by a closed disclosure. Open the older
-    // highlights so every tag color and timeline entry is included in the scan.
-    const earlierHighlights = page.locator('#highlights details.year-fold');
-    if (await earlierHighlights.count()) {
-      await earlierHighlights.evaluate((details: HTMLDetailsElement) => {
-        details.open = true;
+    // Axe cannot inspect content hidden by a closed disclosure. Open every
+    // disclosure so older highlights and completed projects are all scanned.
+    await page.locator('details').evaluateAll((details) => {
+      details.forEach((detail) => {
+        detail.open = true;
       });
-    }
+    });
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
       .analyze();

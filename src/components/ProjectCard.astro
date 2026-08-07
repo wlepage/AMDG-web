@@ -8,11 +8,11 @@ import { resolveImage } from '@lib/images';
 // appears automatically; until then the badge is just text (broken images are
 // hidden via the data-hide-on-error listener below, so the layout never breaks).
 const AGENCY_LOGOS: { test: RegExp; logo: string }[] = [
-  { test: /\bNSF\b/, logo: '/images/partners/nsf.svg' },
+  { test: /\bNSF\b/, logo: '/images/partners/nsf.png' },
   { test: /\bNASA\b/, logo: '/images/partners/nasa.svg' },
   { test: /\bAFOSR\b/, logo: '/images/partners/afosr.jpeg' },
   { test: /\bONR\b/, logo: '/images/partners/onr.png' },
-  { test: /\b(?:DOE|Department of Energy)\b/, logo: '/images/partners/doe.svg' },
+  { test: /\b(?:DOE|Department of Energy)\b/, logo: '/images/partners/doe.png' },
   { test: /\bERDC\b/, logo: '/images/partners/erdc.jpg' },
   { test: /\bSMST\b/, logo: '/images/partners/smst.png' },
   { test: /\bASME\b/, logo: '/images/partners/asme.svg' },
@@ -35,9 +35,9 @@ const INSTITUTION_LOGOS: Record<string, string> = {
   'u alabama': '/images/institutions/alabama.png',
   'u of alabama': '/images/institutions/alabama.png',
   'university of alabama': '/images/institutions/alabama.png',
-  northwestern: '/images/institutions/northwestern.svg',
-  'northwestern u': '/images/institutions/northwestern.svg',
-  'northwestern university': '/images/institutions/northwestern.svg',
+  northwestern: '/images/institutions/northwestern.png',
+  'northwestern u': '/images/institutions/northwestern.png',
+  'northwestern university': '/images/institutions/northwestern.png',
   purdue: '/images/institutions/purdue.svg',
   'purdue u': '/images/institutions/purdue.svg',
   'purdue university': '/images/institutions/purdue.svg',
@@ -85,7 +85,7 @@ const logoClass = [
             <li>
               {ilogo && (
                 optimizedIlogo ? (
-                  <Image class="project__collab-icon" src={optimizedIlogo} alt="" width={30} height={30} loading="lazy" decoding="async" />
+                  <Image class="project__collab-icon" src={optimizedIlogo} alt="" width={60} height={60} loading="lazy" decoding="async" />
                 ) : (
                   <img class="project__collab-icon" src={ilogo} alt="" loading="lazy" decoding="async" data-hide-on-error />
                 )

@@ -17,10 +17,9 @@ const featuredInstruments = instruments.slice(0, toolsAfterIndex + 1);
 const compactInstruments = instruments.slice(toolsAfterIndex + 1);
 
 // The one sponsor badge on this page is always NSF (the MRI award), so unlike
-// ProjectCard there is nothing to look up — the path is fixed. It lives in
-// public/, so it never resolves through astro:assets and always takes the
-// plain <img> branch.
-const NSF_LOGO = '/images/partners/nsf.svg';
+// ProjectCard there is nothing to look up — the optimized path is fixed.
+const NSF_LOGO = '/images/partners/nsf.png';
+const nsfLogo = resolveImage(NSF_LOGO);
 ---
 <Section id="resources" heading="Community Resources" tint={true}>
   {featuredInstruments.map((instrument) => (
@@ -28,7 +27,11 @@ const NSF_LOGO = '/images/partners/nsf.svg';
       <div class="instrument__body">
         {instrument.sponsor && (
           <p class="instrument__sponsor">
-            <img class="instrument__sponsor-logo" src={NSF_LOGO} alt="" loading="lazy" decoding="async" data-hide-on-error />
+            {nsfLogo ? (
+              <Image class="instrument__sponsor-logo" src={nsfLogo} alt="" width={90} loading="lazy" decoding="async" />
+            ) : (
+              <img class="instrument__sponsor-logo" src={NSF_LOGO} alt="" loading="lazy" decoding="async" data-hide-on-error />
+            )}
             <span>{instrument.sponsor}</span>
           </p>
         )}

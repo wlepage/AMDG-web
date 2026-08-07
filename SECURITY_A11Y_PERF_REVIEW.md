@@ -124,6 +124,11 @@ is mixed to 65% of its category color against black. Opening the normally closed
 "Earlier highlights" disclosure during the axe scan exposed and fixed both the
 orange `feature` case and a 4.32:1 gold `award` case; the expanded scan now passes.
 
+**Expanded 2026-08-07 — all disclosure content is covered by the Axe scan.**
+The regression test now opens every `<details>` element before running axe-core,
+so both older Highlights and Completed Projects remain covered as new cards are
+added. The expanded desktop and mobile scans pass with no WCAG A/AA violations.
+
 **No action needed — nav and disclosure widgets.** Nav controls are real
 `<button>`s with `aria-expanded`/`aria-controls`, focus returns to the toggle on
 Escape, and the Highlights "Earlier highlights" fold
@@ -175,6 +180,16 @@ raster bloat — inspected directly) went from 494 KB → 442 KB via `npx svgo
 --multipass`. Also ran svgo on two other oversized SVG logos found during the
 image pass: `partners/nsf.svg` 124 KB → 111 KB, `institutions/northwestern.svg`
 107 KB → 67 KB. All lossless.
+
+**Improved 2026-08-07 — oversized display logos now use right-sized WebP.**
+DOE, ONR, NSF, and Northwestern marks display at only 30px high but previously
+accounted for 777 KB of decoded initial image data. Transparent 270px masters
+now live under `src/assets/images/` and flow through `astro:assets`, producing
+roughly 1–6 KB delivery images while preserving high-density display quality.
+The same optimized NSF output is reused by the Community Resources badge.
+In an identical clean production-browser trace, initial decoded payload fell
+from 1.09 MB to 328 KB and full-scroll payload from 1.29 MB to 529 KB; no legacy
+oversized logo URL was requested.
 
 **No action needed — fonts.** Already self-hosted (not Google Fonts CDN), all
 three `@font-face` rules use `font-display: swap`, and the two most-used fonts
