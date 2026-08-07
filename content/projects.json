@@ -69,11 +69,25 @@
       ],
       "description": "",
       "earlier": true
+    },
+    {
+      "title": "SMST Founders Grant",
+      "sponsor": "SMST",
+      "collaborators": [],
+      "description": "",
+      "earlier": true
+    },
+    {
+      "title": "ASME Applied Mechanics Division Haythornthwaite Research Initiation Grant",
+      "sponsor": "ASME AMD",
+      "collaborators": [],
+      "description": "",
+      "earlier": true
     }
   ],
   "funders": {
-    "image": "/images/funders.jpg",
-    "alt": "Logos of AMDG sponsors and partners: NSF, Office of Naval Research, AFOSR, NASA, ERDC, ASME, SMST (ASM International), Confluent Medical Technologies, Veeco, the International Digital Image Correlation Society, and The University of Tulsa.",
+    "image": "/images/funders.png",
+    "alt": "Logos of AMDG sponsors and partners: NSF, Office of Naval Research, Department of Energy, NASA, AFOSR, ERDC, SMST (ASM International), ASME, Veeco, Confluent Medical Technologies, the International Digital Image Correlation Society, and The University of Tulsa.",
     "heading": "Sponsors & Partners"
   }
 }

@@ -1,6 +1,6 @@
 {
   "_comment": "Resources AMDG shares with the wider research community. 'instrumentHeading' labels the compact College of Engineering & Computer Science instrument grid. 'instruments' render in array order; 'photos' are optional /images/... paths and only resolved files render, 'sponsor' matches the project-card agency badge, and 'toolsAfter' places the web-tools grid immediately after the featured instrument. 'tools' contain web apps: 'name' and 'description' are required; 'url' renders a link line (omit it while a tool is in beta); 'status' renders a small pill (colors live in STATUS_COLORS in ResourceCard.astro).",
-  "instrumentHeading": "AMDG hosts the following resources for the College of Engineering & Computer Science. These resources are available to all University of Tulsa researchers. Contact us to coordinate access, training, etc.",
+  "instrumentHeading": "AMDG hosts the following resources for the Department of Mechanical Engineering and the College of Engineering & Computer Science. These resources are available to all University of Tulsa researchers. Contact us to coordinate access, training, etc.",
   "tools": [
     {
       "name": "digitalimagecorrelation.org",
@@ -35,7 +35,7 @@
     },
     {
       "name": "Legolas — Instron ElectroPuls E3000",
-      "description": "Electrodynamic load frame with 3 kN and 100+ Hz capacity. Features closed-loop feedback and auto-tuning with force and strain, along with sample temperature monitoring. Supports pneumatic grips for samples up to 0.25 inch thick or round. Includes a 6000 VA Li-ion battery backup to preserve fatigue tests during power outages.",
+      "description": "Electrodynamic load frame with 3 kN and 100+ Hz capacity. Features closed-loop feedback and auto-tuning with force and strain, along with sample temperature monitoring. Supports pneumatic grips for samples up to 0.25 inch thick or round. Includes a 6000 VA Li-ion battery backup for uninterrupted tests during power outages.",
       "photos": [
         {
           "src": "/images/resources/legolas-1.jpg",

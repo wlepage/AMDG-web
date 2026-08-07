@@ -92,7 +92,7 @@ edit. Structural/CSS work does not need this, but anything that adds/changes the
   fold, and the `funders` image. Section heading is **"Active Projects"**.
 - Each card has ONE white sponsor **badge** — logo + agency name in a single
   rounded container (no nested pills). The logo auto-derives from `AGENCY_LOGOS`
-  by matching the `sponsor` string (NSF/NASA/AFOSR/ONR/DOE/ERDC →
+  by matching the `sponsor` string (NSF/NASA/AFOSR/ONR/DOE/ERDC/SMST/ASME →
   `/images/partners/<agency>.<ext>`). **Logos are mixed formats** (svg/png/jpeg);
   the map carries the real extension — keep it in sync with the actual files.
 - Collaborators get an institution **chip** via `INSTITUTION_LOGOS`, keyed on the

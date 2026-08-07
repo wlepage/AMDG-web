@@ -14,6 +14,8 @@ const AGENCY_LOGOS: { test: RegExp; logo: string }[] = [
   { test: /\bONR\b/, logo: '/images/partners/onr.png' },
   { test: /\b(?:DOE|Department of Energy)\b/, logo: '/images/partners/doe.svg' },
   { test: /\bERDC\b/, logo: '/images/partners/erdc.jpg' },
+  { test: /\bSMST\b/, logo: '/images/partners/smst.png' },
+  { test: /\bASME\b/, logo: '/images/partners/asme.svg' },
 ];
 const sponsorLogo = (s = '') => AGENCY_LOGOS.find((a) => a.test.test(s))?.logo ?? '';
 
@@ -49,6 +51,11 @@ interface Props { project: Project; }
 const { project: p } = Astro.props;
 const logo = sponsorLogo(p.sponsor);
 const optimizedLogo = logo ? resolveImage(logo) : undefined;
+const logoClass = [
+  'project__sponsor-logo',
+  /\bSMST\b/.test(p.sponsor ?? '') ? 'project__sponsor-logo--smst' : '',
+  /\bASME\b/.test(p.sponsor ?? '') ? 'project__sponsor-logo--asme' : '',
+].filter(Boolean).join(' ');
 ---
 <li class="project card">
   {p.sponsor && (
@@ -56,9 +63,9 @@ const optimizedLogo = logo ? resolveImage(logo) : undefined;
       <span class="project__sponsor">
         {logo && (
           optimizedLogo ? (
-            <Image class="project__sponsor-logo" src={optimizedLogo} alt="" width={90} loading="lazy" decoding="async" />
+            <Image class={logoClass} src={optimizedLogo} alt="" width={90} loading="lazy" decoding="async" />
           ) : (
-            <img class="project__sponsor-logo" src={logo} alt="" loading="lazy" decoding="async" data-hide-on-error />
+            <img class={logoClass} src={logo} alt="" loading="lazy" decoding="async" data-hide-on-error />
           )
         )}
         <span>{p.sponsor}</span>
@@ -110,6 +117,8 @@ const optimizedLogo = logo ? resolveImage(logo) : undefined;
   /* Sponsor logo: floats to 30px tall, width follows aspect ratio (ONR stays
      wide). No chip of its own — the badge supplies the white background. */
   .project__sponsor-logo { flex: none; height: 30px; width: auto; object-fit: contain; }
+  .project__sponsor-logo--smst { height: 15px; }
+  .project__sponsor-logo--asme { height: 24px; }
   /* Collaborators: each institution mark sits in a uniform 30x30 white chip so
      they all align regardless of source aspect ratio / transparency. */
   .project__collab-icon {
@@ -156,4 +165,3 @@ const optimizedLogo = logo ? resolveImage(logo) : undefined;
     true
   );
 </script>
-
