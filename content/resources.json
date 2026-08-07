@@ -34,6 +34,36 @@
       "toolsAfter": true
     },
     {
+      "name": "Lambo — Forge Nano Prometheus",
+      "description": "Fluidized-bed particle atomic layer deposition reactor for conformal coating of powders and other particulate substrates. Operates at temperatures up to 400°C with a standard vessel fill size of 10–150 mL, includes an integrated quadrupole mass spectrometer for process-gas analysis, and is configured for Al₂O₃ and Y₂O₃ deposition.",
+      "photos": [
+        {
+          "src": "/images/resources/forge-nano-prometheus.jpg",
+          "alt": "Forge Nano Prometheus fluidized-bed particle ALD reactor with its enclosure, vacuum system, and computer control station."
+        }
+      ]
+    },
+    {
+      "name": "Vigor 2G Argon Glovebox",
+      "description": "Argon glovebox with both internal and inline regenerable organic-solvent traps for handling air- and moisture-sensitive materials. The working enclosure houses a planetary ball mill, stirring hotplate, and balance, enabling powder milling, mixing, heating, and weighing without removing samples from the inert atmosphere.",
+      "photos": [
+        {
+          "src": "/images/hero/glovebox.jpg",
+          "alt": "AMDG members working at the Vigor 2G argon glovebox, with one member reaching into the gloves to handle a sample."
+        }
+      ]
+    },
+    {
+      "name": "Allied Metallographic Sample Preparation Equipment",
+      "description": "Sectioning, grinding, and polishing equipment for metallographic sample preparation. The suite includes a MetPrep 3x grinder/polisher with a PH-3 power head, two M-Prep 5x grinder/polishers, an 8-inch MultiPrep precision polishing system, a TechCut 4x precision sectioning saw, and a PowerCut 10x abrasive cut-off saw.",
+      "photos": [
+        {
+          "src": "/images/resources/allied-metprep-3x.jpg",
+          "alt": "Allied MetPrep 3x grinder/polisher using its PH-3 power head to prepare mounted specimens on a rotating platen."
+        }
+      ]
+    },
+    {
       "name": "Legolas — Instron ElectroPuls E3000",
       "description": "Electrodynamic load frame with 3 kN and 100+ Hz capacity. Features closed-loop feedback and auto-tuning with force and strain, along with sample temperature monitoring. Supports pneumatic grips for samples up to 0.25 inch thick or round. Includes a 6000 VA Li-ion battery backup for uninterrupted tests during power outages.",
       "photos": [

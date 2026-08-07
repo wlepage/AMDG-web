@@ -118,10 +118,11 @@ edit. Structural/CSS work does not need this, but anything that adds/changes the
   not 78%** — at 78% the orange is 4.45:1 on its own tint and fails the axe
   WCAG-AA check in `tests/a11y.spec.ts`.
 - `instruments[]` renders in array order: featured Psylotech µTS → web tools →
-  a compact three-card grid for Legolas, Gimli, and Keyence. The µTS entry's
-  `toolsAfter: true` marks the split; it carries its own access statement,
-  hardcoded-NSF badge, and award note. `instrumentHeading` labels the compact
-  College of Engineering & Computer Science resource grid.
+  a compact six-card grid for Lambo (Forge Nano Prometheus), the Vigor 2G
+  glovebox, Allied metallographic equipment, Legolas, Gimli, and Keyence. The
+  µTS entry's `toolsAfter: true` marks the split; it carries its own access
+  statement, hardcoded-NSF badge, and award note. `instrumentHeading` labels the
+  department/college resource grid.
 - Each photo is gated on **`resolveImage()` succeeding**, not on the JSON string,
   so a card renders text-only with no 404 when its file is absent. The featured
   µTS uses text-left/photo-right columns on wide screens and lets the photo fall
